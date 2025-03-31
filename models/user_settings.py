@@ -1,6 +1,7 @@
 import json
 import uuid
 import bcrypt
+from typing import Dict, Any
 
 class UserSettings:
     def __init__(self):

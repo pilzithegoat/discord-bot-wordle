@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Optional, List, Dict
 from models.user_settings import UserSettings
 from models.server_config import ServerConfig
+from typing import Optional, List, Dict
 
 class GameHistory:
     def __init__(self):

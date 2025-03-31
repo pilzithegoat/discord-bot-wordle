@@ -2,6 +2,7 @@ import json
 import random
 from datetime import datetime
 from utils.helpers import WORDS
+from typing import Optional, List, Dict, Any
 
 class DailyChallenge:
     def __init__(self):
