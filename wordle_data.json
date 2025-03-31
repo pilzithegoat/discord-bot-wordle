@@ -1,0 +1,168 @@
+{
+  "guilds": {
+    "1317428884509036646": {
+      "users": {
+        "761329534716215296": [
+          {
+            "id": "32D83FED",
+            "timestamp": "2025-03-29T22:25:50.056844",
+            "won": false,
+            "word": "zebra",
+            "attempts": 0,
+            "hints": 0,
+            "guesses": [],
+            "duration": 1.920095,
+            "anonymous": false,
+            "guild_id": 1317428884509036646
+          },
+          {
+            "id": "785E1416",
+            "timestamp": "2025-03-29T22:17:58.720367",
+            "won": false,
+            "word": "druck",
+            "attempts": 0,
+            "hints": 0,
+            "guesses": [],
+            "duration": 3.585421,
+            "anonymous": false,
+            "guild_id": 1317428884509036646
+          },
+          {
+            "id": "9F71AA07",
+            "timestamp": "2025-03-29T10:01:02.095693",
+            "won": false,
+            "word": "wolke",
+            "attempts": 0,
+            "hints": 0,
+            "guesses": [],
+            "duration": 1.343345,
+            "anonymous": false,
+            "guild_id": 1317428884509036646
+          },
+          {
+            "id": "18EE26B0",
+            "timestamp": "2025-03-29T10:00:32.558649",
+            "won": false,
+            "word": "wolke",
+            "attempts": 0,
+            "hints": 0,
+            "guesses": [],
+            "duration": 2.444819,
+            "anonymous": false,
+            "guild_id": 1317428884509036646
+          },
+          {
+            "id": "46918FD5",
+            "timestamp": "2025-03-29T09:51:59.836698",
+            "won": false,
+            "word": "wolke",
+            "attempts": 0,
+            "hints": 0,
+            "guesses": [],
+            "duration": 1.624389,
+            "anonymous": false,
+            "guild_id": 1317428884509036646
+          },
+          {
+            "id": "D1D30615",
+            "timestamp": "2025-03-29T09:23:14.710042",
+            "won": false,
+            "word": "pilze",
+            "attempts": 0,
+            "hints": 0,
+            "guesses": [],
+            "duration": 2.332724,
+            "anonymous": false,
+            "guild_id": 1317428884509036646
+          }
+        ]
+      }
+    }
+  },
+  "global": {
+    "users": {
+      "761329534716215296": [
+        {
+          "id": "32D83FED",
+          "timestamp": "2025-03-29T22:25:50.056844",
+          "won": false,
+          "word": "zebra",
+          "attempts": 0,
+          "hints": 0,
+          "guesses": [],
+          "duration": 1.920095,
+          "anonymous": false,
+          "guild_id": 1317428884509036646
+        },
+        {
+          "id": "785E1416",
+          "timestamp": "2025-03-29T22:17:58.720367",
+          "won": false,
+          "word": "druck",
+          "attempts": 0,
+          "hints": 0,
+          "guesses": [],
+          "duration": 3.585421,
+          "anonymous": false,
+          "guild_id": 1317428884509036646
+        },
+        {
+          "id": "9F71AA07",
+          "timestamp": "2025-03-29T10:01:02.095693",
+          "won": false,
+          "word": "wolke",
+          "attempts": 0,
+          "hints": 0,
+          "guesses": [],
+          "duration": 1.343345,
+          "anonymous": false,
+          "guild_id": 1317428884509036646
+        },
+        {
+          "id": "18EE26B0",
+          "timestamp": "2025-03-29T10:00:32.558649",
+          "won": false,
+          "word": "wolke",
+          "attempts": 0,
+          "hints": 0,
+          "guesses": [],
+          "duration": 2.444819,
+          "anonymous": false,
+          "guild_id": 1317428884509036646
+        },
+        {
+          "id": "46918FD5",
+          "timestamp": "2025-03-29T09:51:59.836698",
+          "won": false,
+          "word": "wolke",
+          "attempts": 0,
+          "hints": 0,
+          "guesses": [],
+          "duration": 1.624389,
+          "anonymous": false,
+          "guild_id": 1317428884509036646
+        },
+        {
+          "id": "D1D30615",
+          "timestamp": "2025-03-29T09:23:14.710042",
+          "won": false,
+          "word": "pilze",
+          "attempts": 0,
+          "hints": 0,
+          "guesses": [],
+          "duration": 2.332724,
+          "anonymous": false,
+          "guild_id": 1317428884509036646
+        }
+      ]
+    }
+  },
+  "anonymous_games": {},
+  "achievements": {
+    "761329534716215296": {
+      "speedster": "2025-03-29T09:23:14.689973",
+      "hint_hater": "2025-03-29T09:23:14.689973"
+    }
+  },
+  "daily_challenges": {}
+}
