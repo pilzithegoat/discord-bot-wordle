@@ -1,5 +1,5 @@
 import discord
-from discord.ui import Modal, TextInput
+from discord.ui import View, Button, Select, Modal, TextInput
 from models.game_history import GameHistory
 
 class AnonCheckModal(Modal, title="🔒 Anonyme Spiele - Passwortprüfung"):

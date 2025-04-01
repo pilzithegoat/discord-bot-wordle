@@ -1,5 +1,5 @@
 import discord
-from discord.ui import View, Button, Modal, TextInput, Select
+from discord.ui import View, Button, Select, Modal, TextInput
 from discord import Interaction
 from ..utils.helpers import verify_password
 

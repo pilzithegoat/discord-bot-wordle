@@ -6,7 +6,7 @@ from cogs.wordle_cog import WordleCog
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
-WORDS_FILE = os.getenv("WORDS_FILE", "words.txt")
+WORDS_FILE = "words.txt"
 MAX_ATTEMPTS = 6
 MAX_HINTS = 3
 DATA_FILE = "wordle_data.json"

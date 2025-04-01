@@ -1,6 +1,7 @@
 import discord
 import asyncio
 import os
+from discord.ui import View, Button, Select, Modal, TextInput
 from discord import app_commands
 from discord.ext import commands
 from models.game_history import GameHistory

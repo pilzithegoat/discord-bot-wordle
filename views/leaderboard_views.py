@@ -1,6 +1,6 @@
 import discord
 import uuid
-from discord.ui import View, Button, Select
+from discord.ui import View, Button, Select, Modal, TextInput
 from models.game_history import GameHistory
 from dotenv import load_dotenv
 from typing import Optional
