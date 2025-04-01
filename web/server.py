@@ -1,9 +1,10 @@
-from flask import Flask, render_template, redirect, session
-from auth import requires_auth, get_guilds
+from flask import Flask, render_template, redirect, session, request
 import sqlite3
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key_here"
+
+from .auth import requires_auth, get_guilds
 
 # Datenbank initialisieren
 def init_db():
