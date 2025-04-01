@@ -1,4 +1,5 @@
 import discord
+from discord import ui
 from discord.ui import View, Button, Select, Modal, TextInput
 from modals.modals import GuessModal
 from typing import Optional
