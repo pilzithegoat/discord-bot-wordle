@@ -6,6 +6,7 @@ from modals.modals import PageSelectModal, AnonCheckModal
 from dotenv import load_dotenv
 from typing import Optional
 from discord.ext import commands
+from datetime import datetime
 
 WORDS_FILE = "words.txt"
 MAX_ATTEMPTS = 6

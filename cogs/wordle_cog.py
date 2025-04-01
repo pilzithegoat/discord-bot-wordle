@@ -1,6 +1,8 @@
 import discord
 import asyncio
 import os
+from typing import Dict, Any
+from datetime import datetime
 from discord.ui import View, Button, Select, Modal, TextInput
 from discord import app_commands
 from discord.ext import commands
@@ -489,10 +491,6 @@ class WordleCog(commands.Cog):
             )
     
         await interaction.response.send_message(embed=embed, ephemeral=True)
-
-    @app_commands.command(name="achievements", description="Zeige deine Achievements")
-    async def show_achievements_command(self, interaction: discord.Interaction):
-        await self._show_achievements(interaction)
 
     @app_commands.command(name="dailylb", description="Daily Challenge Bestenliste")
     async def daily_leaderboard(self, interaction: discord.Interaction):

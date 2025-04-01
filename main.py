@@ -5,7 +5,6 @@ from discord.ext import commands
 from cogs.wordle_cog import WordleCog
 
 load_dotenv()
-TOKEN = os.getenv("TOKEN")
 WORDS_FILE = "words.txt"
 MAX_ATTEMPTS = 6
 MAX_HINTS = 3
@@ -20,14 +19,9 @@ intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 
-
-async def setup():
-    await bot.add_cog(WordleCog(bot))
-
 @bot.event
 async def on_ready():
-    await setup()  # Cog wird hier geladen
-    await bot.tree.sync()
+    await bot.add_cog(WordleCog(bot))
     print(f"{bot.user} ist bereit!")
 
 
@@ -43,4 +37,4 @@ if __name__ == "__main__":
     if not WORDS:
         raise ValueError("Keine gültigen Wörter in der Datei!")
     
-    bot.run(TOKEN)
+    bot.run("")
