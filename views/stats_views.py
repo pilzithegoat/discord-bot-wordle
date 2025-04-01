@@ -1,6 +1,6 @@
 import discord
 from discord.ui import View, Button, Select, Modal, TextInput
-from discord import Interaction, Embed
+from discord import Interaction, Embed, ui
 from datetime import datetime
 
 class StatsView(View):

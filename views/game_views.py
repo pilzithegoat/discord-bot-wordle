@@ -1,8 +1,10 @@
 import discord
 from discord import ui
-from discord.ui import View, Button, Select, Modal, TextInput
+from discord.ui import View, Button, Select, Modal, TextInput, button
 from modals.modals import GuessModal
 from typing import Optional
+
+MAX_HINTS = 3
 
 class EndGameView(View):
     def __init__(self, cog, user_id: int):

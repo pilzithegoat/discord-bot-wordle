@@ -1,6 +1,12 @@
 import discord
 from discord.ui import View, Button, Select, Modal, TextInput
 from discord import Interaction, Embed
+from discord.ext import commands
+
+intents = discord.Intents.default()
+intents.message_content = True
+intents.members = True
+bot = commands.Bot(command_prefix="!", intents=intents)
 
 class DailyChallengeView(View):
     def __init__(self, cog):
