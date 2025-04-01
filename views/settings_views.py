@@ -1,7 +1,7 @@
 import discord
 from discord.ui import View, Button, Select, Modal, TextInput
 from discord import Interaction
-from ..utils.helpers import verify_password
+from utils.helpers import verify_password
 
 class SettingsView(View):
     def __init__(self, cog, user_id: int):
