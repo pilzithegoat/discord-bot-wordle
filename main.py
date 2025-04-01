@@ -27,6 +27,13 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
+
+    activity = discord.Activity(
+        name="Wordle 🟩🟨", 
+        type=discord.ActivityType.listening
+    )
+    await bot.change_presence(activity=activity)
+
     try:
         await bot.add_cog(WordleCog(bot))
         print(f"{bot.user} ist bereit!")
