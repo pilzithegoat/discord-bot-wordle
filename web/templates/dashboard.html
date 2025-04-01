@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wordle Bot Dashboard</title>
+</head>
+<body>
+    <h1>Willkommen, {{ user.username }}!</h1>
+    
+    <h2>Deine Server:</h2>
+    <ul>
+    {% for guild in guilds %}
+        <li>
+            <a href="/configure/{{ guild.id }}">
+                {{ guild.name }} 
+                {% if guild.permissions & 0x20 %}
+                    (Admin)
+                {% endif %}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

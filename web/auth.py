@@ -1,11 +1,11 @@
 from flask import redirect, session, request
 import requests
 import os
-
+import sys
 
 def init_auth_routes(app):
-    CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
-    CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
+    CLIENT_ID = "1333829329175445514"
+    CLIENT_SECRET = "Ik9YT8l-rMcQHNPLhanGk5EcT1LXJgnE"
     REDIRECT_URI = "http://localhost:5000/callback"
 
     @app.route("/login")
@@ -20,6 +20,8 @@ def init_auth_routes(app):
 
     @app.route("/callback")
     def callback():
+        if 'code' not in request.args:
+            return "Missing authorization code", 400
         code = request.args.get('code')
         data = {
         'client_id': CLIENT_ID,
@@ -28,10 +30,13 @@ def init_auth_routes(app):
         'code': code,
         'redirect_uri': REDIRECT_URI
         }
-        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-        r = requests.post('https://discord.com/api/oauth2/token', data=data, headers=headers)
-        session['access_token'] = r.json()['access_token']
-        return redirect("/")
+        print("Access Token:", session['access_token'])
+        user_data = requests.get(
+            'https://discord.com/api/users/@me',
+            headers={'Authorization': f'Bearer {session["access_token"]}'}
+        ).json()
+        print("User Data:", user_data)
+
 
 def requires_auth(f):
     def decorated(*args, **kwargs):
