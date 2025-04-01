@@ -2,6 +2,7 @@ import json
 import uuid
 import bcrypt
 from typing import Dict, Any
+from utils.helpers import hash_password
 
 WORDS_FILE = "words.txt"
 MAX_ATTEMPTS = 6

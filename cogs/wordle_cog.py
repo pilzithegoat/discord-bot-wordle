@@ -13,12 +13,16 @@ from models.daily_challenge import DailyChallenge
 from views.leaderboard_views import EnhancedLeaderboardView
 from views.history_views import HistoryView, HistorySelectionView
 from views.game_views import GameView, EndGameView, MainMenu
-from views.settings_views import SettingsView
+from views.settings_views import SettingsView, AnonPasswordModal
 from modals.modals import GuessModal, SearchModal
 from views.stats_views import StatsView, SearchIDModal
 from views.daily_views import DailyChallengeView
 from models.achievement_system import AchievementSystem
 from models.daily_challenge import DailyChallenge
+from models.wordle_game import WordleGame
+
+MAX_ATTEMPTS = 6
+MAX_HINTS = 3
 
 class WordleCog(commands.Cog):
     def __init__(self, bot):
@@ -35,6 +39,31 @@ class WordleCog(commands.Cog):
         if not self.persistent_views_added:
             self.bot.add_view(MainMenu(self))
             self.persistent_views_added = True
+
+    async def display_game(self, interaction: discord.Interaction, game: WordleGame):
+        """Zeigt das aktuelle Spiel als embed an"""
+        embed = discord.Embed(
+            title=f"Wordle - Versuch {MAX_ATTEMPTS - game.remaining}/{MAX_ATTEMPTS}",
+            color=discord.Color.blurple()
+        )
+        
+        # Füge bisherige Versuche hinzu
+        for i, (guess, result) in enumerate(game.attempts):
+            embed.add_field(
+                name=f"Versuch {i+1}",
+                value=f"`{guess.upper()}`\n{' '.join(result)}",
+                inline=False
+            )
+        
+        # Hinweis-Anzeige
+        embed.add_field(
+            name="Hinweise",
+            value=f"`{game.hint_display}`\nGenutzte Tipps: {game.hints_used}/{MAX_HINTS}",
+            inline=False
+        )
+        
+        await interaction.edit_original_response(embed=embed)
+
 
     @commands.Cog.listener()
     async def on_ready(self):

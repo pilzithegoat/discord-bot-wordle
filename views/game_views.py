@@ -3,6 +3,7 @@ from discord import ui
 from discord.ui import View, Button, Select, Modal, TextInput, button
 from modals.modals import GuessModal
 from typing import Optional
+from views.daily_views import DailyChallengeView
 
 MAX_HINTS = 3
 WORDS_FILE = "words.txt"
