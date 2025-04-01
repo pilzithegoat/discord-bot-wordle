@@ -7,6 +7,14 @@ from models.user_settings import UserSettings
 from models.server_config import ServerConfig
 from typing import Optional, List, Dict
 
+WORDS_FILE = "words.txt"
+MAX_ATTEMPTS = 6
+MAX_HINTS = 3
+DATA_FILE = "wordle_data.json"
+CONFIG_FILE = "server_config.json"
+SETTINGS_FILE = "user_settings.json"
+DAILY_FILE = "daily_data.json"
+
 class GameHistory:
     def __init__(self):
         self.data = self.load_data()

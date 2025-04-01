@@ -1,5 +1,6 @@
 from datetime import datetime
 from models.wordle_game import WordleGame
+from typing import List
 
 class AchievementSystem:
     ACHIEVEMENTS = {

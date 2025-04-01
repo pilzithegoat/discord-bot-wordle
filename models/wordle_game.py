@@ -3,6 +3,10 @@ import discord
 from datetime import datetime
 from utils.helpers import WORDS
 from dotenv import load_dotenv
+from typing import List
+
+MAX_ATTEMPTS = 6
+MAX_HINTS = 3
 
 class WordleGame:
     def __init__(self, user_id: int):

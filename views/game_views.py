@@ -5,6 +5,13 @@ from modals.modals import GuessModal
 from typing import Optional
 
 MAX_HINTS = 3
+WORDS_FILE = "words.txt"
+MAX_ATTEMPTS = 6
+MAX_HINTS = 3
+DATA_FILE = "wordle_data.json"
+CONFIG_FILE = "server_config.json"
+SETTINGS_FILE = "user_settings.json"
+DAILY_FILE = "daily_data.json"
 
 class EndGameView(View):
     def __init__(self, cog, user_id: int):

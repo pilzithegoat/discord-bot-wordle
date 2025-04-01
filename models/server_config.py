@@ -1,5 +1,12 @@
 import json
 from typing import Optional, List, Dict, Any
+WORDS_FILE = "words.txt"
+MAX_ATTEMPTS = 6
+MAX_HINTS = 3
+DATA_FILE = "wordle_data.json"
+CONFIG_FILE = "server_config.json"
+SETTINGS_FILE = "user_settings.json"
+DAILY_FILE = "daily_data.json"
 
 class ServerConfig:
     def __init__(self):
