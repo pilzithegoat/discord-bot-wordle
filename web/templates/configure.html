@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Server Configuration</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Server Configuration</h1>
+    
+    <form method="POST" action="/update_config">
+        <input type="hidden" name="guild_id" value="{{ guild_id }}">
+        
+        <label>Wordle Channel:</label>
+        <select name="channel_id">
+            {% for channel in bot.get_guild(guild_id).channels %}
+                <option value="{{ channel.id }}" 
+                    {% if channel.id == current_channel %}selected{% endif %}>
+                    {{ channel.name }}
+                </option>
+            {% endfor %}
+        </select>
+        
+        <label>Custom Words (comma-separated):</label>
+        <textarea name="words">{{ words|join(',') }}</textarea>
+        
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

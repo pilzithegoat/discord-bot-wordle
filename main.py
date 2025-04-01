@@ -5,6 +5,18 @@ from discord.ext import commands
 from cogs.wordle_cog import WordleCog
 from views.game_views import MainMenu
 
+import threading
+from web.server import app
+from cogs.web_cog import setup as web_setup
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent))
+
+from web.server import app
+
+def run_web():
+    app.run(port=5000)
+
 load_dotenv()
 Token = os.getenv("Token")
 
@@ -68,4 +80,5 @@ async def on_ready():
         print(f"Startfehler: {str(e)}")
 
 if __name__ == "__main__":
+    threading.Thread(target=run_web, daemon=True).start()
     bot.run(Token)

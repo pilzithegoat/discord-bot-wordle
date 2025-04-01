@@ -1,3 +1,5 @@
 discord.py
 python-dotenv
 bcrypt
+flask 
+requests
