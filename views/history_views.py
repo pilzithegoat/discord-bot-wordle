@@ -4,6 +4,7 @@ from discord.ui import View, Button, Select
 from models.game_history import GameHistory
 from modals.modals import PageSelectModal, AnonCheckModal
 from dotenv import load_dotenv
+from typing import Optional
 
 class InitialHistoryView(View):
     def __init__(self, cog):

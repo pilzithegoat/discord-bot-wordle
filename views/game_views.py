@@ -1,6 +1,7 @@
 import discord
 from discord import View, Button, Select
 from modals.modals import GuessModal
+from typing import Optional
 
 class EndGameView(View):
     def __init__(self, cog, user_id: int):

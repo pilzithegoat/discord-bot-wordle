@@ -3,6 +3,7 @@ import uuid
 from discord.ui import View, Button, Select
 from models.game_history import GameHistory
 from dotenv import load_dotenv
+from typing import Optional
 
 class EnhancedLeaderboardView(View):
     def __init__(self, cog, interaction: discord.Interaction, guild_id: Optional[int], scope: str = "server"):
