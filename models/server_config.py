@@ -1,5 +1,6 @@
 import json
 from typing import Optional, List, Dict, Any
+
 WORDS_FILE = "words.txt"
 MAX_ATTEMPTS = 6
 MAX_HINTS = 3

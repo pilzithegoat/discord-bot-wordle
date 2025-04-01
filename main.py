@@ -3,38 +3,62 @@ import os
 from dotenv import load_dotenv
 from discord.ext import commands
 from cogs.wordle_cog import WordleCog
+from views.game_views import MainMenu
 
 load_dotenv()
+Token = os.getenv("Token")
+
 WORDS_FILE = "words.txt"
-MAX_ATTEMPTS = 6
-MAX_HINTS = 3
-DATA_FILE = "wordle_data.json"
-CONFIG_FILE = "server_config.json"
-SETTINGS_FILE = "user_settings.json"
-DAILY_FILE = "daily_data.json"
+if not os.path.exists(WORDS_FILE):
+    with open(WORDS_FILE, "w") as f:
+        f.write("\n".join(["apfel", "birne", "banane", "mango", "beere"]))
+
+with open(WORDS_FILE) as f:
+    WORDS = [w.strip().lower() for w in f.readlines() if len(w.strip()) == 5]
+
+if not WORDS:
+    raise ValueError("Keine gültigen Wörter in der Datei!")
 
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
-bot = commands.Bot(command_prefix="!", intents=intents)
 
+bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
-    await bot.add_cog(WordleCog(bot))
-    print(f"{bot.user} ist bereit!")
-
-
+    try:
+        await bot.add_cog(WordleCog(bot))
+        print(f"{bot.user} ist bereit!")
+        
+        cog = bot.get_cog("WordleCog")
+        for guild in bot.guilds:
+            if channel_id := cog.config.get_wordle_channel(guild.id):
+                channel = guild.get_channel(channel_id)
+                if channel:
+                    try:
+                        await channel.purge(limit=1)
+                        await channel.send(
+                            embed=discord.Embed(
+                                title="🎮 Wordle-Hauptmenü",
+                                description=(
+                                    "**Willkommen im Wordle-Hauptmenü!**\n\n"
+                                    "▸ 🎮 Starte ein neues Spiel\n"
+                                    "▸ 🏆 Zeige die Bestenliste an\n"
+                                    "▸ 📊 Überprüfe deine Statistiken\n"
+                                    "▸ 📜 Durchsuche deine Spielhistorie\n"
+                                    "▸ ⚙️ Passe deine Einstellungen an\n"
+                                    "▸ ❓ Erhalte Spielhilfe"
+                                ),
+                                color=discord.Color.blue()
+                            ),
+                            view=MainMenu(cog)
+                        )
+                    except Exception as e:
+                        print(f"Fehler: {str(e)}")
+                        
+    except Exception as e:
+        print(f"Startfehler: {str(e)}")
 
 if __name__ == "__main__":
-    if not os.path.exists(WORDS_FILE):
-        with open(WORDS_FILE, "w") as f:
-            f.write("\n".join(["apfel", "birne", "banane", "mango", "beere"]))
-    
-    with open(WORDS_FILE) as f:
-        WORDS = [w.strip().lower() for w in f.readlines() if len(w.strip()) == 5]
-    
-    if not WORDS:
-        raise ValueError("Keine gültigen Wörter in der Datei!")
-    
-    bot.run("")
+    bot.run(Token)

@@ -5,6 +5,7 @@ from models.game_history import GameHistory
 from dotenv import load_dotenv
 from typing import Optional
 from datetime import datetime
+from utils.helpers import get_scope_label
 
 WORDS_FILE = "words.txt"
 MAX_ATTEMPTS = 6

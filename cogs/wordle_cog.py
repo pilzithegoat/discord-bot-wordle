@@ -13,12 +13,13 @@ from models.daily_challenge import DailyChallenge
 from views.leaderboard_views import EnhancedLeaderboardView
 from views.history_views import HistoryView, HistorySelectionView
 from views.game_views import GameView, EndGameView, MainMenu
-from views.settings_views import SettingsView
+from views.settings_views import SettingsView, AnonPasswordModal
 from modals.modals import GuessModal, SearchModal
 from views.stats_views import StatsView, SearchIDModal
 from views.daily_views import DailyChallengeView
 from models.achievement_system import AchievementSystem
 from models.daily_challenge import DailyChallenge
+from models.wordle_game import WordleGame
 
 class WordleCog(commands.Cog):
     def __init__(self, bot):

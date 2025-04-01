@@ -2,6 +2,7 @@ import discord
 from discord.ui import View, Button, Select, Modal, TextInput
 from discord import Interaction
 from utils.helpers import verify_password
+from views.history_views import HistoryView
 
 WORDS_FILE = "words.txt"
 MAX_ATTEMPTS = 6
