@@ -1,6 +1,6 @@
 import discord
 import uuid
-from discord import Button, View, Select
+from discord.ui import View, Button, Select
 from models.game_history import GameHistory
 from dotenv import load_dotenv
 
