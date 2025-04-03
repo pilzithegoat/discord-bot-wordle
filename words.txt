@@ -50,7 +50,6 @@ wagen
 zange
 kiste
 lager
-messer
 nudel
 orbit
 prinz
@@ -58,7 +57,5 @@ quarz
 raupe
 saege
 tasse
-uhrwerk
 vorab
 wippe
-zucker 
