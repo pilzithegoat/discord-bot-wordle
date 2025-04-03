@@ -120,4 +120,6 @@ MIT License - Siehe [LICENSE](LICENSE) für Details
 > **Hinweis:** Dieser Bot steht in keiner Verbindung zum offiziellen Wordle-Spiel.  
 > Probleme? [Issue erstellen](https://github.com/pilzithegoat/discord-bot-wordle/issues)
 >> **Extra Hinweis** Dieser Bot ist ein Experiment von mir um zugucken was man alles 
->> mit KI machen kann, deswegen ist dieser Bot zu 100% mit der KI [DeepSeek](https://www.deepseek.com) erstellt worden.
+>> mit KI machen kann, deswegen ist dieser Bot zu 100% mit der KI [DeepSeek](https://www.deepseek.com/en) erstellt worden.
+>> Dies ist der Grund weshalb ihr mit diesem Bot/Code alles machen könnt was ihr wolt.
+>> ✌️Pilzi
