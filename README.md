@@ -51,7 +51,7 @@ FLASK_SECRET=ein_sicherer_geheimer_schluessel
 |-----------------|-------------------------------|------------------------|
 | `/wordle`       | Startet neues Spiel           | `/wordle`              |
 | `/daily`        | Tägliche Challenge            | `/daily`               |
-| `/stats @user`  | Zeigt Spielstatistiken        | `/stats @WordleFan23`  |
+| `/stats @user`  | Zeigt Spielstatistiken        | `/stats @pilzithegoat`  |
 | `/setup`        | Serverkonfiguration starten   | `/setup`               |
 | `/language`     | Sprache ändern (DE/EN)        | `/language en`         |
 
