@@ -17,6 +17,8 @@ Ein vollständig anpassbarer Wordle-Bot für Discord-Server mit Mehrsprachigkeit
 - Python 3.10+
 - Discord Server mit Admin-Rechten
 - [Bot-Token](https://discord.com/developers/applications)
+- Disord Intents aktivieren
+- Discord Bot auf Discord Server einladen
 
 ### Schritt-für-Schritt
 ```
