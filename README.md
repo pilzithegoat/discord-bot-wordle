@@ -75,6 +75,9 @@ Einfach in einen Channel gehen und `/wordle_setup` eigeben(Server Admin berechti
 | `/settings`     | Privatsphäre-Einstellungen    |
 | `/wordle_setup` | Richte den Wordle-Channel ein nur im Ausgewählten Channel senden, In diesem Channel wird das Embed erstellt.|
 
+### Bilder
+Bilder sind nochmal ganz unten der Readme hinterlegt. :D
+
 
 ## 🔧 Anpassungen
 ### Eigene Wörter hinzufügen
@@ -106,15 +109,6 @@ Einfach in einen Channel gehen und `/wordle_setup` eigeben(Server Admin berechti
    ```
 5. Öffne Pull Request
 
-## 🖼️Bilder
-### Hauptmenü
-![Hauptmenü](./bilder/wordle_picture.png)
-
-### Spiel
-![Spiel1](./bilder/spiel1.png) ![Spiel2](./bilder/spiel2.png) ![Spiel3](./bilder/spiel3.png) ![Spiel4](./bilder/spiel4.png)
-
-### Historie
-![Spiel4](./bilder/historie.png)
 
 ## 📜 Lizenz
 MIT License - Siehe [LICENSE](LICENSE) für Details
@@ -129,3 +123,13 @@ MIT License - Siehe [LICENSE](LICENSE) für Details
 >> Dies ist der Grund weshalb ihr mit diesem Bot/Code alles machen könnt was ihr wollt.
 >>
 >> ✌️𝓟𝓲𝓵𝔃𝓲
+
+## 🖼️Bilder
+### Hauptmenü
+![Hauptmenü](./bilder/wordle_picture.png)
+
+### Spiel
+![Spiel1](./bilder/spiel1.png) ![Spiel2](./bilder/spiel2.png) ![Spiel3](./bilder/spiel3.png) ![Spiel4](./bilder/spiel4.png)
+
+### Historie
+![Spiel4](./bilder/historie.png)
