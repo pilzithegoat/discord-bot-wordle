@@ -1,13 +1,18 @@
 import json
+import os
+from dotenv import load_dotenv
 from typing import Optional, List, Dict, Any
 
-WORDS_FILE = "words.txt"
-MAX_ATTEMPTS = 6
-MAX_HINTS = 3
-DATA_FILE = "wordle_data.json"
-CONFIG_FILE = "server_config.json"
-SETTINGS_FILE = "user_settings.json"
-DAILY_FILE = "daily_data.json"
+# Worde Variablen. When use one do a # behind the variable and write # - used
+load_dotenv()
+MAX_HINTS = int(os.getenv("MAX_HINTS", 0))
+MAX_ATTEMPTS = int(os.getenv("MAX_ATTEMPTS", 0))
+WORDS_FILE = os.getenv("WORDS_FILE")
+DATA_FILE = os.getenv("DATA_FILE")
+CONFIG_FILE = os.getenv("CONFIG_FILE") # - used
+SETTINGS_FILE = os.getenv("SETTINGS_FILE")
+DAILY_FILE = os.getenv("DAILY_FILE")
+
 
 class ServerConfig:
     def __init__(self):

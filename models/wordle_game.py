@@ -1,12 +1,22 @@
 import random
 import discord
+import os
+from dotenv import load_dotenv
 from datetime import datetime
 from utils.helpers import WORDS
 from dotenv import load_dotenv
 from typing import List
 
-MAX_ATTEMPTS = 6
-MAX_HINTS = 3
+## Worde Variablen. When use one do a # behind the variable and write # - used
+
+load_dotenv()
+MAX_HINTS = int(os.getenv("MAX_HINTS", 0)) # - used
+MAX_ATTEMPTS = int(os.getenv("MAX_ATTEMPTS", 0)) # - used
+WORDS_FILE = os.getenv("WORDS_FILE")
+DATA_FILE = os.getenv("DATA_FILE")
+CONFIG_FILE = os.getenv("CONFIG_FILE")
+SETTINGS_FILE = os.getenv("SETTINGS_FILE")
+DAILY_FILE = os.getenv("DAILY_FILE")
 
 class WordleGame:
     def __init__(self, user_id: int):

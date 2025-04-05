@@ -5,10 +5,18 @@ from discord.ext import commands
 from cogs.wordle_cog import WordleCog
 from views.game_views import MainMenu
 
+# Worde Variablen. When use one do a # behind the variable and write # - used
 load_dotenv()
-Token = os.getenv("Token")
+Token = os.getenv("TOKEN") # - used
+MAX_HINTS = int(os.getenv("MAX_HINTS", 0))
+MAX_ATTEMPTS = int(os.getenv("MAX_ATTEMPTS", 0))
+WORDS_FILE = os.getenv("WORDS_FILE")
+DATA_FILE = os.getenv("DATA_FILE")
+CONFIG_FILE = os.getenv("CONFIG_FILE")
+SETTINGS_FILE = os.getenv("SETTINGS_FILE")
+DAILY_FILE = os.getenv("DAILY_FILE")
 
-WORDS_FILE = "words.txt"
+
 if not os.path.exists(WORDS_FILE):
     with open(WORDS_FILE, "w") as f:
         f.write("\n".join(["apfel", "birne", "banane", "mango", "beere"]))

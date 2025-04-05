@@ -1,6 +1,18 @@
 from datetime import datetime
 from models.wordle_game import WordleGame
 from typing import List
+import os
+from dotenv import load_dotenv
+
+# Worde Variablen non used yet. When use one do a # behind the variable
+load_dotenv()
+MAX_HINTS = int(os.getenv("MAX_HINTS", 0))
+MAX_ATTEMPTS = int(os.getenv("MAX_ATTEMPTS", 0))
+WORDS_FILE = os.getenv("WORDS_FILE")
+DATA_FILE = os.getenv("DATA_FILE")
+CONFIG_FILE = os.getenv("CONFIG_FILE")
+SETTINGS_FILE = os.getenv("SETTINGS_FILE")
+DAILY_FILE = os.getenv("DAILY_FILE")
 
 class AchievementSystem:
     ACHIEVEMENTS = {
