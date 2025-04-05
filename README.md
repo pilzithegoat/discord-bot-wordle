@@ -1,8 +1,6 @@
 # 🎮 Discord Wordle Bot
 
-Ein vollständig anpassbarer Wordle-Bot für Discord-Server mit vielen Funktion, überzeuge dich gerne.
-
-![Bot Demo](./bilder/wordle_picture.png)
+Ein vollständig anpassbarer Wordle-Bot für Discord-Server mit vielen Funktion, überzeuge dich doch gerbe selber!
 
 ## 🌟 Hauptfunktionen
 - **🌞 Tägliche Challenges** mit globaler Bestenliste
