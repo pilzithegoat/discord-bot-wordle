@@ -1,6 +1,6 @@
 # 🎮 Discord Wordle Bot
 
-Ein vollständig anpassbarer Wordle-Bot für Discord-Server mit Mehrsprachigkeit, Statistiken und Admin-Webinterface.
+Ein vollständig anpassbarer Wordle-Bot für Discord-Server mit vielen Funktion, überzeuge dich gerne.
 
 ![Bot Demo](./wordle_picture.png)
 
@@ -105,6 +105,16 @@ Einfach in einen Channel gehen und `/wordle_setup` eigeben(Server Admin berechti
    git push origin feature/meine-neue-funktion
    ```
 5. Öffne Pull Request
+
+## 🖼️Bilder
+### Hauptmenü
+![Hauptmenü](./bilder/wordle_picture.png)
+
+### Spiel
+![Spiel1](./bilder/spiel1.png) ![Spiel2](./bilder/spiel2.png) ![Spiel3](./bilder/spiel3.png) ![Spiel4](./bilder/spiel4.png)
+
+### Historie
+![Spiel4](./bilder/historie.png)
 
 ## 📜 Lizenz
 MIT License - Siehe [LICENSE](LICENSE) für Details
