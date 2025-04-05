@@ -5,7 +5,6 @@ Ein vollständig anpassbarer Wordle-Bot für Discord-Server mit Mehrsprachigkeit
 ![Bot Demo](./wordle_picture.png)
 
 ## 🌟 Hauptfunktionen
-- **🎮 Mehrsprachiges Wordle-Spiel** (DE/EN)
 - **🌞 Tägliche Challenges** mit globaler Bestenliste
 - **📊 Detaillierte Statistiken** pro Spieler/Server
 - **🎭 Anonymer Spielmodus** mit Passwortschutz
@@ -46,8 +45,7 @@ nano .env  # Bearbeite mit deinen Daten
 5. Client ID herausfinden -> OAuth2 -> Client ID kopiern und einfügen bei client_id=
 6. Alternativ eigene URL generieren lassen. WICHTIG!! Unbedingt bot und applications.commands auswählen.
 7. Auf den Link klicken und Bot auf gewünschten Server einladen.
-8. Token kopieren und in die .env unter ``TOKEN=`` einfügen. Es muss darauf geachtet werden, dass der Token sich in "" befindet.
-
+8. Token kopieren und in die .env unter ``TOKEN=""`` einfügen. Es muss darauf geachtet werden, dass der Token sich in anführungszeichen Bedfinden wie in diesem Beispiel -> ``"dein_token_hier"``
 
 ### 📋 .env-Beispieldatei
 ```
@@ -60,6 +58,7 @@ CONFIG_FILE="server_config.json" #-> Speicherort wo die einzelnen Server configs
 SETTINGS_FILE="user_settings.json" #-> Speicherort wo die einzelen User settings gespeichert werden
 DAILY_FILE="daily_data.json" #-> Speicherort wo die täglichen Spiele gespeichert werden
 ```
+Vordefinierte [.env](./.env) | Einfach auf den .env klicken du wirst automatisch zu einer vordefinierten .env weitergeleitet.
 
 ### Wordle auf Server einrichten
 Einfach in einen Channel gehen und `/wordle_setup` eigeben(Server Admin berechtigung muss vorhanden sein!)
