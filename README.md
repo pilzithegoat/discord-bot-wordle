@@ -74,7 +74,7 @@ Einfach in einen Channel gehen und `/wordle_setup` eigeben(Server Admin berechti
 | `/historie`     | Zeige deine Spielverläufe an  |
 | `/search`       | Suche nach Benutzerstatistiken|
 | `/settings`     | Privatsphäre-Einstellungen    |
-| `/wordle_setup` | Richte den Wordle-Channel ein [nur im Ausgewählten Channel senden. In diesem Channel wird das Embed erstellt.]|
+| `/wordle_setup` | Richte den Wordle-Channel ein nur im Ausgewählten Channel senden, In diesem Channel wird das Embed erstellt.|
 
 
 ## 🔧 Anpassungen
