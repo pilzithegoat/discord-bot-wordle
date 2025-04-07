@@ -19,6 +19,8 @@ DATA_FILE = os.getenv("DATA_FILE")
 CONFIG_FILE = os.getenv("CONFIG_FILE")
 SETTINGS_FILE = os.getenv("SETTINGS_FILE")
 DAILY_FILE = os.getenv("DAILY_FILE")
+COUNT_FILE = os.getenv("COUNT_FILE")
+CUSTOM_ACTIVITY = os.getenv("CUSTOM_ACTIVITY", None)
 
 
 if not os.path.exists(WORDS_FILE):
@@ -65,18 +67,32 @@ def get_total_players():
         return "0 aktive Spieler"
 
 def get_best_player():
-    """Berechnet den besten Spieler mit Priorisierung: 1. Siege, 2. Versuche, 3. Tipps"""
+    """Gibt den besten Spieler zurück oder motiviert zur Teilnahme bei fehlenden Daten"""
     try:
-        cutoff_date = datetime.datetime.now() - datetime.timedelta(hours=24)
-        
-        with open(DATA_FILE) as f:
-            data = json.load(f)
-            global_users = data.get("global", {}).get("users", {})
-            
+        # Prüfe ob Datei existiert
+        if not os.path.exists(DATA_FILE):
+            return "Sei du doch der Beste!", 0, 0, 0
+
+        # Prüfe ob Datei leer ist
+        with open(DATA_FILE, 'r') as f:
+            file_content = f.read()
+            if not file_content.strip():
+                return "Sei du doch der Beste!", 0, 0, 0
+
+            # Lade und validiere Daten
+            data = json.loads(file_content)
+            if "global" not in data or "users" not in data["global"]:
+                return "Sei du doch der Beste!", 0, 0, 0
+
+            global_users = data["global"]["users"]
+            if not global_users:
+                return "Sei du doch der Beste!", 0, 0, 0
+
+            # Analysiere Spiele
+            cutoff_date = datetime.datetime.now() - datetime.timedelta(hours=24)
             player_stats = []
-            
+
             for user_id, all_games in global_users.items():
-                # Filtere gewonnene Spiele der letzten 24h
                 won_games = [
                     g for g in all_games 
                     if g.get("won", False) 
@@ -91,40 +107,38 @@ def get_best_player():
                 total_hints = sum(g["hints"] for g in won_games)
                 avg_attempts = total_attempts / total_wins
                 avg_hints = total_hints / total_wins
-                
-                # Sortierkriterien:
-                # 1. Meiste Siege (absteigend durch -total_wins)
-                # 2. Wenigste Versuche/Sieg (aufsteigend)
-                # 3. Wenigste Tipps/Sieg (aufsteigend)
+
                 player_stats.append((
-                    -total_wins,    # Primärschlüssel 
-                    avg_attempts,   # Sekundärschlüssel
-                    avg_hints,      # Tertiärschlüssel
+                    -total_wins,    # Meiste Siege zuerst
+                    avg_attempts,   # Wenigste Versuche
+                    avg_hints,      # Wenigste Tipps
                     user_id
                 ))
-            
+
             if not player_stats:
-                return "Werde der/die Erste!", 0, 0, 0
-            
+                return "Sei du doch der Beste!", 0, 0, 0
+
             player_stats.sort()
-            
-            # Debug-Ausgabe
-            print("\n🏆 Rangliste:")
-            for i, stats in enumerate(player_stats[:3]):
-                print(f"{i+1}. {stats[3][-4:]} "
-                      f"| Siege: {-stats[0]} "
-                      f"| Ø-Versuche: {stats[1]:.1f} "
-                      f"| Ø-Tipps: {stats[2]:.1f}")
-            
             bester = player_stats[0]
             user = bot.get_user(int(bester[3]))
             name = user.name if user else f"Spieler {bester[3][-4:]}"
-            
+
+            # Debug-Ausgabe
+            print(f"\n🔍 Aktueller Topspieler: {name}")
+            print(f"🏆 Siege: {-bester[0]}")
+            print(f"🎯 Ø-Versuche: {bester[1]:.1f}")
+            print(f"💡 Ø-Tipps: {bester[2]:.1f}")
+
             return name, -bester[0], bester[1], bester[2]
-            
+
+    except json.JSONDecodeError:
+        print("⚠️ Ungültiges JSON-Format in der Datei")
+    except KeyError as e:
+        print(f"⚠️ Fehlender Schlüssel in Daten: {str(e)}")
     except Exception as e:
-        print(f"Bester-Spieler-Error: {str(e)}")
-        return "Fehler in der Berechnung", 0, 0, 0
+        print(f"⚠️ Unerwarteter Fehler: {str(e)}")
+
+    return "Werde du doch Topspieler!", 0, 0, 0
     
 async def update_presence():
     await bot.wait_until_ready()
@@ -134,7 +148,7 @@ async def update_presence():
         ("🕒 Online seit", lambda t: t),
         ("🌐 Auf", lambda _: f"{len(bot.guilds)} Servern"),
         ("👥", lambda _: get_total_players()),
-        ("🏆 Beste:r", lambda _: f"{get_best_player()[0]} ({get_best_player()[1]}×)")
+        ("🏆 Beste:r", lambda _: (lambda res: f"{res[0]} ({res[3]} Siege)")(get_best_player()))
     ]
 
     while not bot.is_closed():
@@ -147,7 +161,7 @@ async def update_presence():
             
             activity = discord.Activity(
                 name=main_text,
-                type=discord.ActivityType.listening
+                type=discord.ActivityType.watching
             )
             
             await bot.change_presence(activity=activity)
@@ -163,12 +177,11 @@ async def update_presence():
 async def on_ready():
     bot.start_time = datetime.datetime.now()
     print(f"Gestartet um: {bot.start_time}")
-    print(f"Initiale Spieler: {get_player_count()}")
     print(f"Serveranzahl: {len(bot.guilds)}")
 
     try:
         await bot.add_cog(WordleCog(bot))
-        print(f"Bot Ready {bot.is_ready}")
+        print(f"Bot Ready")
         
         cog = bot.get_cog("WordleCog")
         for guild in bot.guilds:
