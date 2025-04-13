@@ -12,13 +12,16 @@ if project_root not in sys.path:
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from functools import wraps
-from dotenv import load_dotenv
 from models.database import init_db, Session, Guild
 from models.server_config import ServerConfig
 
 # Import configuration from config.py
 try:
-    from config import TOKEN, DISCORD_CLIENT_SECRET, ADMIN_IDS, FLASK_SECRET_KEY, FLASK_APP, FLASK_ENV, MAX_HINTS, MAX_ATTEMPTS
+    from config import (
+        TOKEN, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, ADMIN_IDS,
+        FLASK_SECRET_KEY, FLASK_APP, FLASK_ENV, MAX_HINTS, MAX_ATTEMPTS,
+        DISCORD_REDIRECT_URI
+    )
 except ImportError:
     print("Error: config.py not found. Please run install.sh first.")
     sys.exit(1)
@@ -41,8 +44,6 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 
 # Discord OAuth2 settings
-DISCORD_CLIENT_ID = "1360714397554577561"  # Your Client ID
-DISCORD_REDIRECT_URI = "http://192.168.1.107:5000/callback"
 DISCORD_API_ENDPOINT = "https://discord.com/api/v10"
 
 # Bot settings

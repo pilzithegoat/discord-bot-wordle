@@ -50,24 +50,29 @@ echo -e "${YELLOW}Installiere Abhängigkeiten...${NC}"
 pip install -r requirements.txt
 check_error
 
-# Abfrage der sensiblen Daten
+# Abfrage der Konfigurationsdaten
 echo -e "\n${YELLOW}=== Bot Konfiguration ===${NC}"
 read -p "Discord Bot Token: " BOT_TOKEN
+read -p "Discord Client ID: " CLIENT_ID
 read -p "Discord Client Secret: " CLIENT_SECRET
 read -p "Discord User ID (für Admin-Zugriff): " ADMIN_ID
+read -p "Flask Secret Key: " FLASK_SECRET
+read -p "Redirect URI (z.B. http://localhost:5000/callback): " REDIRECT_URI
 
 # Erstelle Konfigurationsdatei
 echo -e "${YELLOW}Erstelle Konfigurationsdatei...${NC}"
 cat > config.py << EOL
 # Bot Konfiguration
 TOKEN = "$BOT_TOKEN"
+DISCORD_CLIENT_ID = "$CLIENT_ID"
 DISCORD_CLIENT_SECRET = "$CLIENT_SECRET"
 ADMIN_IDS = ["$ADMIN_ID"]
 
 # Flask Konfiguration
-FLASK_SECRET_KEY = "avb345"
+FLASK_SECRET_KEY = "$FLASK_SECRET"
 FLASK_APP = "dashboard/app.py"
 FLASK_ENV = "development"
+DISCORD_REDIRECT_URI = "$REDIRECT_URI"
 
 # Bot Einstellungen
 MAX_HINTS = 3
