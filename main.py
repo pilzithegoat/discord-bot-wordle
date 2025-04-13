@@ -4,7 +4,6 @@ import asyncio
 import datetime
 import json
 from pathlib import Path
-from dotenv import load_dotenv
 from discord.ext import commands
 from cogs.wordle_cog import WordleCog
 from views.game_views import MainMenu
@@ -13,41 +12,35 @@ import threading
 import sys
 from models.database import init_db, Session, Game
 from cogs import setup
+from werkzeug.serving import make_server
 
 # Add the project root directory to the Python path
 project_root = str(Path(__file__).parent)
 if project_root not in sys.path:
     sys.path.append(project_root)
 
-# Load environment variables
-load_dotenv()
+# Import configuration from config.py
+try:
+    from config import (
+        TOKEN, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, ADMIN_IDS,
+        FLASK_SECRET_KEY, FLASK_APP, FLASK_ENV, MAX_HINTS, MAX_ATTEMPTS,
+        DISCORD_REDIRECT_URI
+    )
+except ImportError:
+    print("Error: config.py not found. Please run install.sh first.")
+    sys.exit(1)
 
 # Bot configuration
-Token = os.getenv("TOKEN")
-MAX_HINTS = int(os.getenv("MAX_HINTS", 0))
-MAX_ATTEMPTS = int(os.getenv("MAX_ATTEMPTS", 0))
-WORDS_FILE = os.getenv("WORDS_FILE")
-DATA_FILE = os.getenv("DATA_FILE")
-CONFIG_FILE = os.getenv("CONFIG_FILE")
-SETTINGS_FILE = os.getenv("SETTINGS_FILE")
-DAILY_FILE = os.getenv("DAILY_FILE")
-COUNT_FILE = os.getenv("COUNT_FILE")
-CUSTOM_ACTIVITY = os.getenv("CUSTOM_ACTIVITY", None)
-FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "your_secret_key_here")
-DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
-DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
-DISCORD_REDIRECT_URI = os.getenv("DISCORD_REDIRECT_URI", "http://localhost:5000/callback")
-ADMIN_IDS = os.getenv("ADMIN_IDS", "").split(",")
-
-if not os.path.exists(WORDS_FILE):
-    with open(WORDS_FILE, "w") as f:
-        f.write("\n".join(["apfel", "birne", "banane", "mango", "beere"]))
-
-with open(WORDS_FILE) as f:
-    WORDS = [w.strip().lower() for w in f.readlines() if len(w.strip()) == 5]
-
-if not WORDS:
-    raise ValueError("Keine gültigen Wörter in der Datei!")
+Token = TOKEN
+MAX_HINTS = MAX_HINTS
+MAX_ATTEMPTS = MAX_ATTEMPTS
+WORDS_FILE = "words.txt"
+DATA_FILE = "wordle_data.json"
+CONFIG_FILE = "server_config.json"
+SETTINGS_FILE = "user_settings.json"
+DAILY_FILE = "daily_challenge.json"
+COUNT_FILE = "game_count.json"
+CUSTOM_ACTIVITY = None
 
 # Initialize Discord bot
 intents = discord.Intents.default()
@@ -57,6 +50,7 @@ intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 presence_counter = 0
+flask_server = None
 
 def get_total_players():
     """Gibt die korrekte Anzahl mit angepasster Grammatik zurück"""
@@ -100,175 +94,98 @@ def get_best_player():
         for game in won_games:
             if game.user_id not in player_stats:
                 player_stats[game.user_id] = {
-                    'wins': 0,
-                    'total_attempts': 0,
-                    'total_hints': 0
+                    "wins": 0,
+                    "total_attempts": 0,
+                    "games": 0
                 }
-            
-            stats = player_stats[game.user_id]
-            stats['wins'] += 1
-            stats['total_attempts'] += game.attempts
-            stats['total_hints'] += game.hints_used
+            player_stats[game.user_id]["wins"] += 1
+            player_stats[game.user_id]["total_attempts"] += game.attempts
+            player_stats[game.user_id]["games"] += 1
         
-        # Berechne Durchschnittswerte und sortiere
-        player_rankings = []
-        for user_id, stats in player_stats.items():
-            avg_attempts = stats['total_attempts'] / stats['wins']
-            avg_hints = stats['total_hints'] / stats['wins']
-            
-            player_rankings.append((
-                -stats['wins'],     # Meiste Siege zuerst
-                avg_attempts,       # Wenigste Versuche
-                avg_hints,          # Wenigste Tipps
-                user_id
-            ))
+        # Finde den besten Spieler
+        best_player_id = max(
+            player_stats.items(),
+            key=lambda x: (x[1]["wins"], -x[1]["total_attempts"] / x[1]["games"])
+        )[0]
+        
+        best_stats = player_stats[best_player_id]
+        avg_attempts = best_stats["total_attempts"] / best_stats["games"]
         
         session.close()
-        
-        if not player_rankings:
-            return "Sei du doch der Beste!", 0, 0, 0
-        
-        player_rankings.sort()
-        bester = player_rankings[0]
-        user = bot.get_user(int(bester[3]))
-        name = user.name if user else f"Spieler {bester[3]}"
-        
-        # Debug-Ausgabe
-        print(f"\n🔍 Aktueller Topspieler: {name}")
-        print(f"🏆 Siege: {-bester[0]}")
-        print(f"🎯 Ø-Versuche: {bester[1]:.1f}")
-        print(f"💡 Ø-Tipps: {bester[2]:.1f}")
-        
-        return name, -bester[0], bester[1], bester[2]
-        
+        return f"<@{best_player_id}>", best_stats["wins"], avg_attempts, best_stats["games"]
+            
     except Exception as e:
-        print(f"⚠️ Unerwarteter Fehler: {str(e)}")
-        return "Werde du doch Topspieler!", 0, 0, 0
+        print(f"Bestenliste Fehler: {e}")
+        return "Sei du doch der Beste!", 0, 0, 0
 
 async def update_presence():
-    await bot.wait_until_ready()
+    """Aktualisiert den Bot-Status regelmäßig"""
     global presence_counter
     
-    stats = [
-        ("🕒 Online seit", lambda t: t),
-        
-        ("🌐 Auf", lambda _: f"{len(bot.guilds)} Servern"),
-        ("👥", lambda _: get_total_players()),
-        ("🏆 Beste:r", lambda _: (lambda res: f"{res[0]} ({res[3]} Siege)")(get_best_player()))
-    ]
-
-    while not bot.is_closed():
+    while True:
         try:
-            uptime = datetime.datetime.now() - bot.start_time
-            time_str = f"{uptime.days}d {uptime.seconds//3600:02d}h {(uptime.seconds//60)%60:02d}m"
+            if presence_counter % 2 == 0:
+                total_players = get_total_players()
+                await bot.change_presence(
+                    activity=discord.Activity(
+                        type=discord.ActivityType.watching,
+                        name=total_players
+                    )
+                )
+            else:
+                best_player, wins, avg_attempts, games = get_best_player()
+                if wins > 0:
+                    await bot.change_presence(
+                        activity=discord.Activity(
+                            type=discord.ActivityType.watching,
+                            name=f"{best_player} mit {wins} Siegen"
+                        )
+                    )
+                else:
+                    await bot.change_presence(
+                        activity=discord.Activity(
+                            type=discord.ActivityType.watching,
+                            name="wer der Beste wird"
+                        )
+                    )
             
-            current_stat = stats[presence_counter % len(stats)]
-            main_text = f"{current_stat[0]} {current_stat[1](time_str)}"
-            
-            activity = discord.Activity(
-                name=main_text,
-                type=discord.ActivityType.watching
-            )
-            
-            await bot.change_presence(activity=activity)
             presence_counter += 1
-            
-            await asyncio.sleep(15)
+            await asyncio.sleep(30)
             
         except Exception as e:
-            print(f"Presence-Fehler: {str(e)}")
+            print(f"Status Update Fehler: {e}")
             await asyncio.sleep(30)
 
 @bot.event
 async def on_ready():
-    bot.start_time = datetime.datetime.now()
-    print(f"Gestartet um: {bot.start_time}")
-    print(f"Serveranzahl: {len(bot.guilds)}")
-
-    try:
-        await bot.add_cog(WordleCog(bot))
-        print(f"Bot Ready")
-        
-        cog = bot.get_cog("WordleCog")
-        for guild in bot.guilds:
-            if channel_id := cog.config.get_wordle_channel(guild.id):
-                channel = guild.get_channel(channel_id)
-                if channel:
-                    try:
-                        await channel.purge(limit=None)
-                        await channel.send(
-                            embed=discord.Embed(
-                                title="🎮 Wordle-Hauptmenü",
-                                description=(
-                                    "**Willkommen im Wordle-Hauptmenü!**\n\n"
-                                    "▸ 🎮 Starte ein neues Spiel\n"
-                                    "▸ 🏆 Zeige die Bestenliste an\n"
-                                    "▸ 📊 Überprüfe deine Statistiken\n"
-                                    "▸ 📜 Durchsuche deine Spielhistorie\n"
-                                    "▸ ⚙️ Passe deine Einstellungen an\n"
-                                    "▸ ❓ Erhalte Spielhilfe"
-                                ),
-                                color=discord.Color.blue()
-                            ),
-                            view=MainMenu(cog)
-                        )
-                    except Exception as e:
-                        print(f"Fehler: {str(e)}")
-                        
-        bot.loop.create_task(update_presence())
-        await setup(bot)
-
-    except Exception as e:
-        print(f"Startfehler: {str(e)}")
-
-def run_flask():
-    """Run the Flask app in a separate thread"""
-    app.config['BOT'] = bot
-    app.config['BOT_TOKEN'] = Token
-    app.config['MAX_HINTS'] = MAX_HINTS
-    app.config['MAX_ATTEMPTS'] = MAX_ATTEMPTS
-    app.config['WORDS_FILE'] = WORDS_FILE
-    app.config['CONFIG_FILE'] = CONFIG_FILE
-    app.config['DISCORD_CLIENT_ID'] = DISCORD_CLIENT_ID
-    app.config['DISCORD_CLIENT_SECRET'] = DISCORD_CLIENT_SECRET
-    app.config['DISCORD_REDIRECT_URI'] = DISCORD_REDIRECT_URI
-    app.config['ADMIN_IDS'] = ADMIN_IDS
+    """Wird ausgeführt, wenn der Bot bereit ist"""
+    print(f"{bot.user} ist online!")
     
-    app.run(host='0.0.0.0', port=5000, debug=False)
-
-def run_dashboard():
-    """Start the Flask dashboard"""
-    print("Starting Flask dashboard...")
-    app.config['BOT'] = bot
-    app.config['BOT_TOKEN'] = Token
-    app.config['MAX_HINTS'] = MAX_HINTS
-    app.config['MAX_ATTEMPTS'] = MAX_ATTEMPTS
-    app.config['WORDS_FILE'] = WORDS_FILE
-    app.config['CONFIG_FILE'] = CONFIG_FILE
-    app.config['DISCORD_CLIENT_ID'] = DISCORD_CLIENT_ID
-    app.config['DISCORD_CLIENT_SECRET'] = DISCORD_CLIENT_SECRET
-    app.config['DISCORD_REDIRECT_URI'] = DISCORD_REDIRECT_URI
-    app.config['ADMIN_IDS'] = ADMIN_IDS
+    # Starte das Status-Update
+    asyncio.create_task(update_presence())
     
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    # Lade die Cogs
+    await setup(bot)
+    
+    # Starte den Flask-Server in einem separaten Thread
+    global flask_server
+    flask_server = make_server('0.0.0.0', 5000, app)
+    flask_thread = threading.Thread(target=flask_server.serve_forever)
+    flask_thread.daemon = True
+    flask_thread.start()
+    print("Flask-Server gestartet auf http://0.0.0.0:5000")
 
 async def main():
+    """Hauptfunktion zum Starten des Bots"""
     try:
+        # Starte den Bot
         await bot.start(Token)
     except Exception as e:
         print(f"Fehler beim Starten des Bots: {e}")
-        sys.exit(1)
+        if flask_server:
+            flask_server.shutdown()
+        await bot.close()
 
 if __name__ == "__main__":
-    # Initialize the database
-    init_db()
-    
-    # Create threads for bot and dashboard
-    bot_thread = threading.Thread(target=run_flask)
-    bot_thread.daemon = True
-    bot_thread.start()
-    
-    # Wait for the bot thread to complete
-    bot_thread.join()
-    
+    # Starte den Bot
     asyncio.run(main())
