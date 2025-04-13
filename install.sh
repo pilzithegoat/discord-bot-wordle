@@ -50,6 +50,30 @@ echo -e "${YELLOW}Installiere Abhängigkeiten...${NC}"
 pip install -r requirements.txt
 check_error
 
+# Abfrage der sensiblen Daten
+echo -e "\n${YELLOW}=== Bot Konfiguration ===${NC}"
+read -p "Discord Bot Token: " BOT_TOKEN
+read -p "Discord Client Secret: " CLIENT_SECRET
+read -p "Discord User ID (für Admin-Zugriff): " ADMIN_ID
+
+# Erstelle Konfigurationsdatei
+echo -e "${YELLOW}Erstelle Konfigurationsdatei...${NC}"
+cat > config.py << EOL
+# Bot Konfiguration
+TOKEN = "$BOT_TOKEN"
+DISCORD_CLIENT_SECRET = "$CLIENT_SECRET"
+ADMIN_IDS = ["$ADMIN_ID"]
+
+# Flask Konfiguration
+FLASK_SECRET_KEY = "avb345"
+FLASK_APP = "dashboard/app.py"
+FLASK_ENV = "development"
+
+# Bot Einstellungen
+MAX_HINTS = 3
+MAX_ATTEMPTS = 6
+EOL
+
 # Mache Skripte ausführbar
 echo -e "${YELLOW}Mache Skripte ausführbar...${NC}"
 chmod +x start_bot.sh

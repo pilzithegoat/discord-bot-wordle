@@ -16,11 +16,15 @@ from dotenv import load_dotenv
 from models.database import init_db, Session, Guild
 from models.server_config import ServerConfig
 
-# Load environment variables
-load_dotenv()
+# Import configuration from config.py
+try:
+    from config import TOKEN, DISCORD_CLIENT_SECRET, ADMIN_IDS, FLASK_SECRET_KEY, FLASK_APP, FLASK_ENV, MAX_HINTS, MAX_ATTEMPTS
+except ImportError:
+    print("Error: config.py not found. Please run install.sh first.")
+    sys.exit(1)
 
 app = Flask(__name__)
-app.secret_key = os.getenv("FLASK_SECRET_KEY", "your_secret_key_here")
+app.secret_key = FLASK_SECRET_KEY
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["PERMANENT_SESSION_LIFETIME"] = 3600  # 1 hour
 app.config["SESSION_COOKIE_SECURE"] = False  # Set to False for local development
@@ -37,16 +41,15 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 
 # Discord OAuth2 settings
-DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
-DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
-DISCORD_REDIRECT_URI = os.getenv("DISCORD_REDIRECT_URI", "http://localhost:5000/callback")
+DISCORD_CLIENT_ID = "1360714397554577561"  # Your Client ID
+DISCORD_REDIRECT_URI = "http://192.168.1.107:5000/callback"
 DISCORD_API_ENDPOINT = "https://discord.com/api/v10"
 
 # Bot settings
-BOT_TOKEN = os.getenv("TOKEN")
-MAX_HINTS = int(os.getenv("MAX_HINTS", 3))
-MAX_ATTEMPTS = int(os.getenv("MAX_ATTEMPTS", 6))
-ADMIN_IDS = os.getenv("ADMIN_IDS", "").split(",")
+BOT_TOKEN = TOKEN
+MAX_HINTS = MAX_HINTS
+MAX_ATTEMPTS = MAX_ATTEMPTS
+ADMIN_IDS = ADMIN_IDS
 
 def is_bot_admin(user_id):
     """Check if the user has admin permissions in any of the bot's guilds"""
