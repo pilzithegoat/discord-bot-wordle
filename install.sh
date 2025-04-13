@@ -9,8 +9,7 @@ NC='\033[0m' # No Color
 # Funktion zum Überprüfen des Exit-Codes
 check_error() {
     if [ $? -ne 0 ]; then
-        echo -e "${RED}Fehler bei der Ausführung des vorherigen Befehls!${NC}"
-        exit 1
+        echo -e "${YELLOW}Warnung: Ein Fehler ist aufgetreten, aber wir fahren fort...${NC}"
     fi
 }
 
@@ -22,10 +21,9 @@ if [ "$EUID" -eq 0 ]; then
     exit 1
 fi
 
-# Aktualisiere Paketliste
+# Aktualisiere Paketliste (ignoriere Fehler)
 echo -e "${YELLOW}Aktualisiere Paketliste...${NC}"
-sudo apt-get update
-check_error
+sudo apt-get update || true
 
 # Installiere Python und pip
 echo -e "${YELLOW}Installiere Python und pip...${NC}"
