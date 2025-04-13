@@ -1,57 +1,75 @@
-import json
-import random
-from datetime import datetime
-from utils.helpers import WORDS
-from typing import Optional, List, Dict, Any
+from typing import Dict, Any, List
+from datetime import datetime, timedelta
+from models.database import Session, DailyChallenge
 
-WORDS_FILE = "words.txt"
-MAX_ATTEMPTS = 6
-MAX_HINTS = 3
-DATA_FILE = "wordle_data.json"
-CONFIG_FILE = "server_config.json"
-SETTINGS_FILE = "user_settings.json"
-DAILY_FILE = "daily_data.json"
-
-class DailyChallenge:
+class DailyChallengeManager:
     def __init__(self):
-        self.data = self.load_data()
+        self.session = Session()
     
-    def load_data(self):
-        try:
-            with open(DAILY_FILE) as f:
-                data = json.load(f)
-                data["last_updated"] = datetime.strptime(data["last_updated"], "%Y-%m-%d").date()
-                return data
-        except (FileNotFoundError, KeyError, json.JSONDecodeError):
-            return {
-                "current_word": None,
-                "last_updated": None,
-                "participants": {}
-            }
-    
-    def save_data(self):
-        with open(DAILY_FILE, "w") as f:
-            save_data = self.data.copy()
-            save_data["last_updated"] = self.data["last_updated"].isoformat()
-            json.dump(save_data, f, indent=2)
-    
-    def get_daily_word(self):
-        if self.should_reset():
-            self.data["current_word"] = random.choice(WORDS)
-            self.data["last_updated"] = datetime.now().date()
-            self.data["participants"] = {}
-            self.save_data()
-        return self.data["current_word"]
-    
-    def should_reset(self):
-        return self.data["last_updated"] != datetime.now().date()
-    
-    def has_played(self, user_id: int):
-        return str(user_id) in self.data["participants"]
-    
-    def add_participant(self, user_id: int, attempts: int):
-        self.data["participants"][str(user_id)] = {
-            "attempts": attempts,
-            "timestamp": datetime.now().isoformat()
+    def get_today_challenge(self) -> Dict[str, Any]:
+        """Holt die heutige Challenge"""
+        today = datetime.utcnow().date()
+        challenge = self.session.query(DailyChallenge).filter(
+            DailyChallenge.date >= today,
+            DailyChallenge.date < today + timedelta(days=1)
+        ).first()
+        
+        if not challenge:
+            return None
+        
+        return {
+            "date": challenge.date.isoformat(),
+            "word": challenge.word,
+            "participants": challenge.participants or {}
         }
-        self.save_data()
+    
+    def create_challenge(self, word: str) -> None:
+        """Erstellt eine neue Challenge"""
+        today = datetime.utcnow().date()
+        challenge = DailyChallenge(
+            date=today,
+            word=word,
+            participants={}
+        )
+        self.session.add(challenge)
+        self.session.commit()
+    
+    def add_participant(self, user_id: int, game_data: Dict[str, Any]) -> None:
+        """Fügt einen Teilnehmer zur Challenge hinzu"""
+        challenge = self.get_today_challenge()
+        if not challenge:
+            return
+        
+        participants = challenge["participants"]
+        participants[str(user_id)] = game_data
+        self.session.query(DailyChallenge).filter(
+            DailyChallenge.date == datetime.fromisoformat(challenge["date"])
+        ).update({"participants": participants})
+        self.session.commit()
+    
+    def get_participants(self) -> Dict[str, Dict[str, Any]]:
+        """Holt alle Teilnehmer der heutigen Challenge"""
+        challenge = self.get_today_challenge()
+        if not challenge:
+            return {}
+        return challenge["participants"]
+    
+    def get_user_challenge(self, user_id: int) -> Dict[str, Any]:
+        """Holt die Challenge eines Benutzers"""
+        challenge = self.get_today_challenge()
+        if not challenge:
+            return None
+        return challenge["participants"].get(str(user_id))
+    
+    def has_participated(self, user_id: int) -> bool:
+        """Prüft, ob ein Benutzer bereits teilgenommen hat"""
+        return str(user_id) in self.get_participants()
+    
+    def get_all_challenges(self) -> List[Dict[str, Any]]:
+        """Holt alle Challenges"""
+        challenges = self.session.query(DailyChallenge).order_by(DailyChallenge.date.desc()).all()
+        return [{
+            "date": challenge.date.isoformat(),
+            "word": challenge.word,
+            "participants": challenge.participants or {}
+        } for challenge in challenges]

@@ -9,13 +9,18 @@ MAX_ATTEMPTS = 6
 MAX_HINTS = 3
 
 class WordleGame:
-    def __init__(self, user_id: int):
-        self.user_id = user_id
+    def __init__(self, word: str, guild_id: int):
+        self.word = word.upper()
+        self.guild_id = guild_id
+        self.guesses = []
+        self.hints_used = 0
+        self.won = False
+        self.lost = False
+        self.start_time = None
+        self.end_time = None
         self.secret_word = random.choice(WORDS)
         self.attempts = []
         self.remaining = MAX_ATTEMPTS
-        self.hints_used = 0
-        self.start_time = datetime.now()
         self.correct_positions = [False]*5
         self.hinted_letters = set()
     

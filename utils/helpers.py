@@ -4,19 +4,20 @@ import bcrypt
 WORDS_FILE = "words.txt"
 MAX_ATTEMPTS = 6
 MAX_HINTS = 3
-DATA_FILE = "wordle_data.json"
-CONFIG_FILE = "server_config.json"
-SETTINGS_FILE = "user_settings.json"
-DAILY_FILE = "daily_data.json"
 
 def get_scope_label(scope: str) -> str:
     return "Server" if scope == "server" else "Global"
 
 def hash_password(password: str) -> str:
-    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+    """Hash a password for storing."""
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
 
-def verify_password(stored_hash: str, password: str) -> bool:
-    return bcrypt.checkpw(password.encode(), stored_hash.encode())
+def verify_password(stored_password: str, provided_password: str) -> bool:
+    """Verify a stored password against one provided by user"""
+    if not stored_password:
+        return False
+    return bcrypt.checkpw(provided_password.encode('utf-8'), stored_password.encode('utf-8'))
 
 # Words initialization
 WORDS_FILE = os.getenv("WORDS_FILE", "words.txt")

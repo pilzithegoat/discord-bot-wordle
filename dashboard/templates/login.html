@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Discord Wordle Dashboard{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+        <div class="card shadow">
+            <div class="card-body p-5">
+                <h1 class="display-4 mb-4">Discord Wordle</h1>
+                <p class="lead mb-4">Manage your Discord Wordle bot settings and configuration</p>
+                
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">
+                        <i class="bi bi-discord me-2"></i>Login with Discord
+                    </a>
+                </div>
+                
+                <div class="mt-4">
+                    <p class="text-muted">
+                        <i class="bi bi-info-circle me-1"></i>
+                        You need to be a server owner or bot administrator to access the dashboard.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

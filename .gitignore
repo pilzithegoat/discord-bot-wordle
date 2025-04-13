@@ -1,1 +1,15 @@
 .env
+/views/__pycache__
+/views/__pycache__
+/.venv
+/dashboard/__pycache__
+/cogs/__pycache__
+/cogs/__pycache__
+cogs/__pycache__/__init__.cpython-312.pyc
+*.pyc
+*.pyc
+/views/__pycache__
+*.pyc
+/views/__pycache__
+cogs/__pycache__/wordle_cog.cpython-312.pyc
+*.db

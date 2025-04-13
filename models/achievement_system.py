@@ -1,57 +1,52 @@
+from typing import Dict, Any, List
 from datetime import datetime
-from models.wordle_game import WordleGame
-from typing import List
+from models.database import Session, Achievement
 
 class AchievementSystem:
-    ACHIEVEMENTS = {
-        "speedster": {
-            "name": "Blitzmeister ⚡",
-            "condition": lambda game: game.get_duration() < 30,
-            "description": "Gewinne ein Spiel in unter 30 Sekunden"
-        },
-        "perfectionist": {
-            "name": "Perfektionist 🎯",
-            "condition": lambda game: game.attempts == 1,
-            "description": "Gewinne im ersten Versuch"
-        },
-        "hint_hater": {
-            "name": "Tipp-Verweigerer 🙈",
-            "condition": lambda game: game.hints_used == 0,
-            "description": "Gewinne ohne Tipps"
-        },
-        "veteran": {
-            "name": "Veteran 🏆",
-            "condition": lambda count: count >= 100,
-            "description": "Spiele 100 Spiele"
-        }
-    }
-
-    def __init__(self, cog):
-        self.cog = cog
-
-    def check_achievements(self, user_id: int, game: WordleGame):
-        self.cog.history.data.setdefault("achievements", {})
-        
-        user_achievements = self.cog.history.data["achievements"].setdefault(str(user_id), {})
-        new_achievements = []
-        
-        total_games = len(self.cog.history.get_user_games(user_id, "global")) + len(
-            self.cog.history.get_anonymous_games(
-                self.cog.settings.get_settings(user_id)["anon_id"]
-            )
+    def __init__(self):
+        self.session = Session()
+    
+    def add_achievement(self, user_id: int, achievement_type: str) -> None:
+        """Fügt ein Achievement hinzu"""
+        achievement = Achievement(
+            user_id=user_id,
+            achievement_type=achievement_type,
+            unlocked_at=datetime.utcnow()
         )
+        self.session.add(achievement)
+        self.session.commit()
+    
+    def get_user_achievements(self, user_id: int) -> List[Dict[str, Any]]:
+        """Holt alle Achievements eines Benutzers"""
+        achievements = self.session.query(Achievement).filter(
+            Achievement.user_id == user_id
+        ).order_by(Achievement.unlocked_at.desc()).all()
         
-        for achievement_id, data in self.ACHIEVEMENTS.items():
-            if achievement_id not in user_achievements:
-                try:
-                    if achievement_id == "veteran":
-                        if data["condition"](total_games):  # 👈 Nur total_games übergeben
-                            user_achievements[achievement_id] = datetime.now().isoformat()
-                            new_achievements.append(data)
-                    elif data["condition"](game):
-                        user_achievements[achievement_id] = datetime.now().isoformat()
-                        new_achievements.append(data)
-                except Exception as e:
-                    print(f"Achievement check error: {e}")
+        return [{
+            "type": achievement.achievement_type,
+            "unlocked_at": achievement.unlocked_at.isoformat()
+        } for achievement in achievements]
+    
+    def has_achievement(self, user_id: int, achievement_type: str) -> bool:
+        """Prüft, ob ein Benutzer ein bestimmtes Achievement hat"""
+        return self.session.query(Achievement).filter(
+            Achievement.user_id == user_id,
+            Achievement.achievement_type == achievement_type
+        ).first() is not None
+    
+    def get_all_achievements(self) -> Dict[int, List[Dict[str, Any]]]:
+        """Holt alle Achievements aller Benutzer"""
+        achievements = self.session.query(Achievement).order_by(
+            Achievement.unlocked_at.desc()
+        ).all()
         
-        return new_achievements
+        result = {}
+        for achievement in achievements:
+            if achievement.user_id not in result:
+                result[achievement.user_id] = []
+            result[achievement.user_id].append({
+                "type": achievement.achievement_type,
+                "unlocked_at": achievement.unlocked_at.isoformat()
+            })
+        
+        return result

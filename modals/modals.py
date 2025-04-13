@@ -50,13 +50,19 @@ class PageSelectModal(Modal, title="🔢 Direkt zur Seite springen"):
             await interaction.response.send_message("❌ Bitte eine gültige Zahl eingeben!", ephemeral=True)
 
 
-class GuessModal(Modal, title="Wort eingeben"):
-    guess = TextInput(label="Dein 5-Buchstaben-Wort", min_length=5, max_length=5, custom_id="guess_input")
-    
+class GuessModal(Modal, title="Wordle-Raten"):
     def __init__(self, cog):
-        super().__init__()
+        super().__init__(timeout=None)
         self.cog = cog
-    
+        
+    guess = TextInput(
+        label="Gib dein 5-Buchstaben-Wort ein:",
+        placeholder="Dein Wort...",
+        min_length=5,
+        max_length=5,
+        required=True
+    )
+
     async def on_submit(self, interaction: discord.Interaction):
         await self.cog.handle_process_guess(interaction, self.guess.value)
 

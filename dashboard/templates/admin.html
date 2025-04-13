@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Discord Wordle{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-shield-lock me-2"></i>Admin Dashboard
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h5 class="mb-0">Bot Information</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <strong>Bot Name:</strong> {{ bot.user.name }}
+                                </p>
+                                <p class="card-text">
+                                    <strong>Bot ID:</strong> {{ bot.user.id }}
+                                </p>
+                                <p class="card-text">
+                                    <strong>Servers:</strong> {{ bot.guilds|length }}
+                                </p>
+                                <p class="card-text">
+                                    <strong>Users:</strong> {{ bot.users|length }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h5 class="mb-0">Global Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <strong>Max Hints:</strong> {{ max_hints }}
+                                </p>
+                                <p class="card-text">
+                                    <strong>Max Attempts:</strong> {{ max_attempts }}
+                                </p>
+                                <p class="card-text">
+                                    <strong>Words File:</strong> {{ words_file }}
+                                </p>
+                                <p class="card-text">
+                                    <strong>Word Count:</strong> {{ word_count }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Server List</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Server Name</th>
+                                                <th>Server ID</th>
+                                                <th>Owner</th>
+                                                <th>Wordle Channel</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for guild in bot.guilds %}
+                                            <tr>
+                                                <td>
+                                                    {% if guild.icon %}
+                                                    <img src="https://cdn.discordapp.com/icons/{{ guild.id }}/{{ guild.icon }}.png" alt="{{ guild.name }}" class="rounded-circle me-2" width="24" height="24">
+                                                    {% else %}
+                                                    <i class="bi bi-hash me-2"></i>
+                                                    {% endif %}
+                                                    {{ guild.name }}
+                                                </td>
+                                                <td>{{ guild.id }}</td>
+                                                <td>{{ guild.owner.name }}</td>
+                                                <td>
+                                                    {% if config.get(guild.id|string, {}).get('wordle_channel') %}
+                                                    <span class="badge bg-success">Configured</span>
+                                                    {% else %}
+                                                    <span class="badge bg-warning">Not Configured</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <a href="{{ url_for('guild_settings', guild_id=guild.id) }}" class="btn btn-sm btn-primary">
+                                                        <i class="bi bi-gear"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

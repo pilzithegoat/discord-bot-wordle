@@ -1,7 +1,7 @@
 import discord
 from discord.ui import View, Button, Select, Modal, TextInput
 from discord import Interaction
-from utils.helpers import verify_password
+from utils.helpers import verify_password, hash_password
 from views.history_views import HistoryView
 
 WORDS_FILE = "words.txt"
@@ -57,7 +57,8 @@ class AnonPasswordSetModal(Modal, title="Anonym-Passwort setzen"):
         self.user_id = user_id
     
     async def on_submit(self, interaction: discord.Interaction):
-        self.cog.settings.update_settings(self.user_id, anon_password=self.password.value)
+        hashed_password = hash_password(self.password.value)
+        self.cog.settings.update_settings(self.user_id, anon_password=hashed_password)
         await interaction.response.send_message("✅ Passwort erfolgreich gesetzt!", ephemeral=True)
 
 class AnonPasswordModal(Modal, title="Anonyme Spiele Passwort"):

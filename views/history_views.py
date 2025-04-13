@@ -167,11 +167,8 @@ class HistoryView(View):
         if self.current_mode == "anonymous":
             settings = self.cog.settings.get_settings(self.user_id)
             return self.cog.history.get_anonymous_games(settings["anon_id"])
-        return self.cog.history.get_user_games(
-            self.user_id,
-            self.current_scope,
-            self.guild_id if self.current_scope == "server" else None
-        )
+        scope = self.guild_id if self.current_scope == "server" else "global"
+        return self.cog.history.get_user_games(self.user_id, scope)
 
     def create_embed(self):
         games = self.get_games()

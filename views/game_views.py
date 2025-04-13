@@ -113,51 +113,71 @@ class GameView(View):
         self.clear_items()
         game = self.cog.games.get(self.user_id)
         
+        # Get max hints from server config if game exists
+        max_hints = 3  # Default value
+        if game and self.cog:
+            settings = self.cog.get_guild_settings(game.guild_id)
+            if settings:
+                max_hints = settings.get("max_hints", 3)
+        
         self.add_item(Button(
             label="Raten ✏️", 
             style=discord.ButtonStyle.primary, 
-            emoji="📝",
             custom_id="guess_button"
         ))
+        
         self.add_item(Button(
-            label=f"Tipp 💡 ({game.hints_used if game else 0}/{MAX_HINTS})",
+            label=f"Tipp 💡 ({game.hints_used if game else 0}/{max_hints})",
             style=discord.ButtonStyle.secondary,
-            disabled=(not game or game.hints_used >= MAX_HINTS),
-            emoji="💡",
+            disabled=(not game or game.hints_used >= max_hints),
             custom_id="hint_button"
         ))
+        
         self.add_item(Button(
             label="Beenden 🗑️", 
             style=discord.ButtonStyle.danger, 
-            emoji="❌",
             custom_id="quit_button"
         ))
-    
+
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         try:
             if interaction.user.id != self.user_id:
                 await interaction.response.send_message("❌ Nicht dein Spiel!", ephemeral=True)
                 return False
-        
+            
             custom_id = interaction.data["custom_id"]
-        
+            
             if custom_id == "guess_button":
                 await interaction.response.send_modal(GuessModal(self.cog))
             elif custom_id == "hint_button":
+                # Get max hints from server config
+                settings = self.cog.get_guild_settings(interaction.guild_id)
+                max_hints = settings.get("max_hints", 3) if settings else 3
+                
+                game = self.cog.games.get(self.user_id)
+                if not game:
+                    await interaction.response.send_message("❌ Kein aktives Spiel gefunden!", ephemeral=True)
+                    return False
+                
+                if game.hints_used >= max_hints:
+                    await interaction.response.send_message(f"❌ Du hast bereits alle {max_hints} Hinweise verwendet!", ephemeral=True)
+                    return False
+                
                 await self.cog.handle_give_hint(interaction)
             elif custom_id == "quit_button":
                 await self.cog.handle_end_game(interaction, False)
             
             return False
         except Exception as e:
-            if not interaction.response.is_done():  # 👈 Prüfen ob bereits geantwortet wurde
+            if not interaction.response.is_done():
                 await interaction.response.send_message(
                     "⚠️ Ein Fehler ist aufgetreten! Bitte versuche es erneut.",
                     ephemeral=True
                 )
             else:
-                await interaction.followup.send(  # 👈 followup verwenden
+                await interaction.followup.send(
                     "⚠️ Ein Fehler ist aufgetreten!",
                     ephemeral=True
                 )
             print(f"Interaktionsfehler: {str(e)}")
+            return False
