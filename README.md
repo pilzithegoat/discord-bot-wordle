@@ -121,6 +121,118 @@ MIT License - Siehe [LICENSE](LICENSE) für Details
 >> **!!Extra Hinweis!!** Dieser Bot ist ein Experiment von mir um zugucken was man alles 
 >> mit KI machen kann, deswegen ist dieser Bot zu 100% mit der KI [DeepSeek](https://www.deepseek.com/en) erstellt worden.
 
+EN🇬🇧
+A fully customizable Wordle bot for Discord servers with lots of features — feel free to check it out yourself!
+
+## 🌟 Main Features
+- **🌞 Daily challenges** with global leaderboard
+- **📊 Detailed statistics** per player/server
+- **🎭 Anonymous mode** with password protection
+- **🔧 Custom word lists** easily adjustable
+
+## 🚀 Installation
+### Requirements
+- Python 3.10+
+- Discord server with admin rights
+- [Bot token](https://discord.com/developers/applications)
+- Activate Discord Intents
+- Invite Discord bot to Discord server
+
+### Step-by-step
+ ```
+1. Clone repository
+git clone https://github.com/pilzithegoat/discord-bot-wordle.git cd discord-bot-wordle
+2. Create virtual environment
+python -m venv .venv source .venv/bin/activate  # Linux/Mac .venv\Scripts\activate     # Windows
+3. Install dependencies
+pip install -r requirements.txt
+4. Create configuration file
+cp .env.example .env nano .env  # Edit it with your data
+ ```
+
+### Discord Dev Portal
+1. Create application
+2. Bot -> Click on Bot in the menu
+3. Intents -> Presence Intent = On, Server Members Intent = On, Message Content Intent = On
+4. Invite bot to server -> https://discord.com/oauth2/authorize?client_id=your_client_id&permissions=8798240730112&integration_type=0&scope=bot+applications.commands
+5. Find client ID -> OAuth2 -> Copy Client ID and paste it for client_id=
+6. Alternatively let it generate its own URL. IMPORTANT!! Make sure to select both bot and applications.commands.
+7. Click the link and invite the bot to the desired server.
+8. Copy the token and put it into .env under ``TOKEN=""``. Take care that the token is within quotation marks, e.g. ``"your_token_here"``
+
+### 📋 .env Example File
+ ```
+TOKEN=your_bot_token_here MAX_HINTS=3 #-> how many hints per game MAX_ATTEMPTS=6 #-> how many attempts per game WORDS_FILE=“words.txt” #-> file with all words DATA_FILE=“wordle_data.json” #-> where individual games are stored CONFIG_FILE=“server_config.json” #-> where server configs are stored SETTINGS_FILE=“user_settings.json” #-> where user settings are stored DAILY_FILE=“daily_data.json” #-> where daily games are stored
+ ```
+
+Predefined [.env](./.env) | Simply click the .env file and you’ll be redirected to the predefined .env.
+
+### Set up Wordle on your server
+Just go into a channel and type `/wordle_setup` (Server admin permission required!)
+
+## 🕹️ Usage
+### Basic Commands
+| Command         | Description                      |
+|-----------------|----------------------------------|
+| `/wordle`       | Starts a new game                |
+| `/achievements` | Show your achievements           |
+| `/daily`        | Daily challenge                  |
+| `/historie`     | Show your game history           |
+| `/search`       | Search for user statistics       |
+| `/settings`     | Privacy settings                 |
+| `/wordle_setup` | Set up the Wordle channel only send in the chosen channel, the embed will be created in this channel.|
+
+### Images
+Images are shown again at the very bottom of the README :D
+
+## 🔧 Customization
+### Add your own words
+1. Open the word files:
+ ```
+nano data/words.txt  # German words
+ ```
+2. Add words (one 5-letter word per line):
+  ```
+   KLIMA
+   WOCHE
+   ZEBRA
+   ```
+
+## 🛠️ Development
+### Contribution Guidelines
+1. Fork the repository
+2. Create a feature branch:
+ ```
+   git checkout -b feature/my-new-feature
+   ```
+3. Commit your changes:
+```
+git commit -m “add awesome feature”
+```
+4. Push the branch:
+```
+git push origin feature/my-new-feature
+```
+5. Open a Pull Request
+
+## ❓ Support
+There is no support for this repo. Try to solve problems yourself. You can still open an issue, but there is no guarantee for help.
+
+## 📜 License
+MIT License - See [LICENSE](LICENSE) for details
+
+***
+
+> **Note:** This bot is not connected to the official Wordle game.  
+> Problems? [Create an issue](https://github.com/pilzithegoat/discord-bot-wordle/issues)
+
+***
+>> **!!Extra Note!!** This bot is an experiment of mine to see what's possible with AI, so  
+>> the bot is 100% created with the AI [DeepSeek](https://www.deepseek.com/en).
+
+***
+
+
 ## 🖼️Picture
 ### Mainmenu
 ![Mainmenu](./bilder/wordle_picture.png)
