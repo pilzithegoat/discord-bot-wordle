@@ -6,7 +6,6 @@ Ein vollständig anpassbarer Wordle-Bot für Discord-Server mit vielen Funktion,
 - **🌞 Tägliche Challenges** mit globaler Bestenliste
 - **📊 Detaillierte Statistiken** pro Spieler/Server
 - **🎭 Anonymer Spielmodus** mit Passwortschutz
-- **⚙️ Web-Dashboard** für Serverkonfiguration
 - **🔧 Eigenes Wortlisten** einfach anpassbar
 
 ## 🚀 Installation
