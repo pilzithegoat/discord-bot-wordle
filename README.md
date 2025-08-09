@@ -139,19 +139,21 @@ A fully customizable Wordle bot for Discord servers with lots of features — fe
 - Invite Discord bot to Discord server
 
 ### Step-by-step
- ```
+```
 # 1. Clone repository
 git clone https://github.com/pilzithegoat/discord-bot-wordle.git cd discord-bot-wordle
 
 # 2. Create virtual environment
-python -m venv .venv source .venv/bin/activate  # Linux/Mac .venv\Scripts\activate     # Windows
+python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
+.venv\Scripts\activate     # Windows
 
 # 3. Install dependencies
 pip install -r requirements.txt
 
 #4. Create configuration file
 cp .env.example .env nano .env  # Edit it with your data
- ```
+```
 
 ### Discord Dev Portal
 1. Create application
@@ -164,9 +166,9 @@ cp .env.example .env nano .env  # Edit it with your data
 8. Copy the token and put it into .env under ``TOKEN=""``. Take care that the token is within quotation marks, e.g. ``"your_token_here"``
 
 ### 📋 .env Example File
- ```
+```
 TOKEN=your_bot_token_here MAX_HINTS=3 #-> how many hints per game MAX_ATTEMPTS=6 #-> how many attempts per game WORDS_FILE=“words.txt” #-> file with all words DATA_FILE=“wordle_data.json” #-> where individual games are stored CONFIG_FILE=“server_config.json” #-> where server configs are stored SETTINGS_FILE=“user_settings.json” #-> where user settings are stored DAILY_FILE=“daily_data.json” #-> where daily games are stored
- ```
+```
 
 Predefined [.env](./.env) | Simply click the .env file and you’ll be redirected to the predefined .env.
 
