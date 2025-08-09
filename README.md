@@ -120,14 +120,13 @@ MIT License - Siehe [LICENSE](LICENSE) für Details
 ---
 >> **!!Extra Hinweis!!** Dieser Bot ist ein Experiment von mir um zugucken was man alles 
 >> mit KI machen kann, deswegen ist dieser Bot zu 100% mit der KI [DeepSeek](https://www.deepseek.com/en) erstellt worden.
->> ✌️𝓟𝓲𝓵𝔃𝓲
 
-## 🖼️Bilder
-### Hauptmenü
-![Hauptmenü](./bilder/wordle_picture.png)
+## 🖼️Picture
+### Mainmenu
+![Mainmenu](./bilder/wordle_picture.png)
 
-### Spiel
+### Game
 ![Spiel1](./bilder/spiel1.png) ![Spiel2](./bilder/spiel2.png) ![Spiel3](./bilder/spiel3.png) ![Spiel4](./bilder/spiel4.png)
 
-### Historie
+### History
 ![Spiel4](./bilder/historie.png)
