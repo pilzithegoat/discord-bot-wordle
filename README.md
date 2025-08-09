@@ -1,3 +1,4 @@
+DE 🇩🇪
 # 🎮 Discord Wordle Bot
 
 Ein vollständig anpassbarer Wordle-Bot für Discord-Server mit vielen Funktion, überzeuge dich doch gerbe selber!
@@ -6,7 +7,7 @@ Ein vollständig anpassbarer Wordle-Bot für Discord-Server mit vielen Funktion,
 - **🌞 Tägliche Challenges** mit globaler Bestenliste
 - **📊 Detaillierte Statistiken** pro Spieler/Server
 - **🎭 Anonymer Spielmodus** mit Passwortschutz
-- **🔧 Eigenes Wortlisten** einfach anpassbar
+- **🔧 Eigene Wortlisten** einfach anpassbar
 
 ## 🚀 Installation
 ### Voraussetzungen
@@ -106,6 +107,8 @@ Bilder sind nochmal ganz unten der Readme hinterlegt. :D
    ```
 5. Öffne Pull Request
 
+## ❓Support
+Für dieses Repo gibt es keinen Support. Probiert probleme selber zulösen. Ihr könnt totzdem ein Issue erstellen aber keine Garantie auf erfolgreiche hilfe.
 
 ## 📜 Lizenz
 MIT License - Siehe [LICENSE](LICENSE) für Details
@@ -117,8 +120,6 @@ MIT License - Siehe [LICENSE](LICENSE) für Details
 ---
 >> **!!Extra Hinweis!!** Dieser Bot ist ein Experiment von mir um zugucken was man alles 
 >> mit KI machen kann, deswegen ist dieser Bot zu 100% mit der KI [DeepSeek](https://www.deepseek.com/en) erstellt worden.
->> Dies ist der Grund weshalb ihr mit diesem Bot/Code alles machen könnt was ihr wollt.
->>
 >> ✌️𝓟𝓲𝓵𝔃𝓲
 
 ## 🖼️Bilder
