@@ -1,5 +1,5 @@
-DE 🇩🇪
 # 🎮 Discord Wordle Bot
+DE🇩🇪
 
 Ein vollständig anpassbarer Wordle-Bot für Discord-Server mit vielen Funktion, überzeuge dich doch gerbe selber!
 
