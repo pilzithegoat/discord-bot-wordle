@@ -121,7 +121,7 @@ MIT License - Siehe [LICENSE](LICENSE) für Details
 >> **!!Extra Hinweis!!** Dieser Bot ist ein Experiment von mir um zugucken was man alles 
 >> mit KI machen kann, deswegen ist dieser Bot zu 100% mit der KI [DeepSeek](https://www.deepseek.com/en) erstellt worden.
 
-## EN🇬🇧
+### EN🇬🇧
 A fully customizable Wordle bot for Discord servers with lots of features — feel free to check it out yourself!
 
 ## 🌟 Main Features
