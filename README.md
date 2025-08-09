@@ -140,13 +140,16 @@ A fully customizable Wordle bot for Discord servers with lots of features — fe
 
 ### Step-by-step
  ```
-1. Clone repository
+# 1. Clone repository
 git clone https://github.com/pilzithegoat/discord-bot-wordle.git cd discord-bot-wordle
-2. Create virtual environment
+
+# 2. Create virtual environment
 python -m venv .venv source .venv/bin/activate  # Linux/Mac .venv\Scripts\activate     # Windows
-3. Install dependencies
+
+# 3. Install dependencies
 pip install -r requirements.txt
-4. Create configuration file
+
+#4. Create configuration file
 cp .env.example .env nano .env  # Edit it with your data
  ```
 
