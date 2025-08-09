@@ -167,7 +167,7 @@ cp .env.example .env nano .env  # Edit it with your data
 
 ### 📋 .env Example File
 ```
-TOKEN=your_bot_token_here MAX_HINTS=3 #-> how many hints per game MAX_ATTEMPTS=6 #-> how many attempts per game WORDS_FILE=“words.txt” #-> file with all words DATA_FILE=“wordle_data.json” #-> where individual games are stored CONFIG_FILE=“server_config.json” #-> where server configs are stored SETTINGS_FILE=“user_settings.json” #-> where user settings are stored DAILY_FILE=“daily_data.json” #-> where daily games are stored
+TOKEN=your_bot_token_here  MAX_HINTS=3 #-> how many hints per game  MAX_ATTEMPTS=6 #-> how many attempts per game  WORDS_FILE=“words.txt” #-> file with all words  DATA_FILE=“wordle_data.json” #-> where individual games are stored  CONFIG_FILE=“server_config.json” #-> where server configs are stored  SETTINGS_FILE=“user_settings.json” #-> where user settings are stored  DAILY_FILE=“daily_data.json” #-> where daily games are stored 
 ```
 
 Predefined [.env](./.env) | Simply click the .env file and you’ll be redirected to the predefined .env.
