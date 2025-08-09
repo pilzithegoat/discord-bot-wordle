@@ -1,15 +1,19 @@
 import discord
+import os
+from dotenv import load_dotenv
 from discord.ui import View, Button, Select, Modal, TextInput
 from discord import Interaction, Embed, ui
 from datetime import datetime
 
-WORDS_FILE = "words.txt"
-MAX_ATTEMPTS = 6
-MAX_HINTS = 3
-DATA_FILE = "wordle_data.json"
-CONFIG_FILE = "server_config.json"
-SETTINGS_FILE = "user_settings.json"
-DAILY_FILE = "daily_data.json"
+## Worde Variablen non used yet. When use one do a # behind the variable
+load_dotenv()
+MAX_HINTS = int(os.getenv("MAX_HINTS", 0))
+MAX_ATTEMPTS = int(os.getenv("MAX_ATTEMPTS", 0))
+WORDS_FILE = os.getenv("WORDS_FILE")
+DATA_FILE = os.getenv("DATA_FILE")
+CONFIG_FILE = os.getenv("CONFIG_FILE")
+SETTINGS_FILE = os.getenv("SETTINGS_FILE")
+DAILY_FILE = os.getenv("DAILY_FILE")
 
 class StatsView(View):
     def __init__(self, cog, user: discord.User):

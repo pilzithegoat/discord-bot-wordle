@@ -1,11 +1,8 @@
 # 🎮 Discord Wordle Bot
 
-Ein vollständig anpassbarer Wordle-Bot für Discord-Server mit Mehrsprachigkeit, Statistiken und Admin-Webinterface.
-
-![Bot Demo](https://via.placeholder.com/1280x720.png?text=Wordle+Bot+Demo+Preview)
+Ein vollständig anpassbarer Wordle-Bot für Discord-Server mit vielen Funktion, überzeuge dich doch gerbe selber!
 
 ## 🌟 Hauptfunktionen
-- **🎮 Mehrsprachiges Wordle-Spiel** (DE/EN)
 - **🌞 Tägliche Challenges** mit globaler Bestenliste
 - **📊 Detaillierte Statistiken** pro Spieler/Server
 - **🎭 Anonymer Spielmodus** mit Passwortschutz
@@ -38,33 +35,53 @@ pip install -r requirements.txt
 cp .env.example .env
 nano .env  # Bearbeite mit deinen Daten
 ```
+### Discord Dev Portal
+1. Application erstellen
+2. Bot -> Links im Menü auf Bot klicken
+3. Intents -> Presence Intent = On, Server Members Intent = On, Message Content Intent = On
+4. Bot auf Server einladen -> https://discord.com/oauth2/authorize?client_id=deine_client_id&permissions=8798240730112&integration_type=0&scope=bot+applications.commands
+5. Client ID herausfinden -> OAuth2 -> Client ID kopiern und einfügen bei client_id=
+6. Alternativ eigene URL generieren lassen. WICHTIG!! Unbedingt bot und applications.commands auswählen.
+7. Auf den Link klicken und Bot auf gewünschten Server einladen.
+8. Token kopieren und in die .env unter ``TOKEN=""`` einfügen. Es muss darauf geachtet werden, dass der Token sich in anführungszeichen Bedfinden wie in diesem Beispiel -> ``"dein_token_hier"``
 
 ### 📋 .env-Beispieldatei
 ```
 TOKEN=dein_bot_token_hier
-DISCORD_CLIENT_ID=123456789012345678
-DISCORD_CLIENT_SECRET=dein_client_secret_hier
-FLASK_SECRET=ein_sicherer_geheimer_schluessel
+MAX_HINTS=3 #-> wie viele Tipps soll es pro spiel geben
+MAX_ATTEMPTS=6 #-> wie viele Versuche an Wörtern gibt es pro Spiel
+WORDS_FILE="words.txt" #-> Speicherort von der Wörterliste mit allen Wörtern
+DATA_FILE="wordle_data.json" #-> Speicherort wo die einzelnen Spiele gespeichert werden
+CONFIG_FILE="server_config.json" #-> Speicherort wo die einzelnen Server configs gespeichert werden
+SETTINGS_FILE="user_settings.json" #-> Speicherort wo die einzelen User settings gespeichert werden
+DAILY_FILE="daily_data.json" #-> Speicherort wo die täglichen Spiele gespeichert werden
 ```
+Vordefinierte [.env](./.env) | Einfach auf den .env klicken du wirst automatisch zu einer vordefinierten .env weitergeleitet.
+
+### Wordle auf Server einrichten
+Einfach in einen Channel gehen und `/wordle_setup` eigeben(Server Admin berechtigung muss vorhanden sein!)
 
 ## 🕹️ Verwendung
 ### Grundlegende Befehle
-| Befehl          | Beschreibung                  | Beispiel               |
-|-----------------|-------------------------------|------------------------|
-| `/wordle`       | Startet neues Spiel           | `/wordle`              |
-| `/daily`        | Tägliche Challenge            | `/daily`               |
-| `/stats @user`  | Zeigt Spielstatistiken        | `/stats @pilzithegoat`  |
-| `/setup`        | Serverkonfiguration starten   | `/setup`               |
-| `/language`     | Sprache ändern (DE/EN)        | `/language en`         |
+| Befehl          | Beschreibung                  |
+|-----------------|-------------------------------|
+| `/wordle`       | Startet neues Spiel           |
+| `/achievements` | Zeige deine Achievements      |
+| `/daily`        | Tägliche Challenge            |
+| `/historie`     | Zeige deine Spielverläufe an  |
+| `/search`       | Suche nach Benutzerstatistiken|
+| `/settings`     | Privatsphäre-Einstellungen    |
+| `/wordle_setup` | Richte den Wordle-Channel ein nur im Ausgewählten Channel senden, In diesem Channel wird das Embed erstellt.|
 
-![Befehlsbeispiel](https://via.placeholder.com/600x300.png?text=Command+Examples)
+### Bilder
+Bilder sind nochmal ganz unten der Readme hinterlegt. :D
+
 
 ## 🔧 Anpassungen
 ### Eigene Wörter hinzufügen
 1. Öffne die Wortdateien:
    ```
    nano data/words_de.txt  # Deutsche Wörter
-   nano data/words_en.txt  # Englische Wörter
    ```
 2. Füge Wörter hinzu (pro Zeile ein 5-Buchstaben-Wort):
    ```
@@ -72,30 +89,6 @@ FLASK_SECRET=ein_sicherer_geheimer_schluessel
    WOCHE
    ZEBRA
    ```
-
-### Web-Dashboard
-1. Starte den Bot
-2. Öffne im Browser:
-   ```
-   http://localhost:5000
-   ```
-3. **Admin-Funktionen:**
-   - Wordle-Kanal festlegen
-   - Server-spezifische Wortlisten
-   - Sprachkonfiguration
-   - Statistiken einsehen
-
-![Dashboard Demo](https://via.placeholder.com/800x400.png?text=Admin+Dashboard+Preview)
-
-## 🤖 Bot einladen
-1. Generiere Einladungslink:
-   ```
-   https://discord.com/api/oauth2/authorize?
-   client_id=DEINE_CLIENT_ID&
-   permissions=277025770560&
-   scope=bot%20applications.commands
-   ```
-2. Wähle Server aus und bestätige
 
 ## 🛠️ Entwicklung
 ### Beitragsrichtlinien
@@ -114,6 +107,7 @@ FLASK_SECRET=ein_sicherer_geheimer_schluessel
    ```
 5. Öffne Pull Request
 
+
 ## 📜 Lizenz
 MIT License - Siehe [LICENSE](LICENSE) für Details
 
@@ -127,3 +121,13 @@ MIT License - Siehe [LICENSE](LICENSE) für Details
 >> Dies ist der Grund weshalb ihr mit diesem Bot/Code alles machen könnt was ihr wollt.
 >>
 >> ✌️𝓟𝓲𝓵𝔃𝓲
+
+## 🖼️Bilder
+### Hauptmenü
+![Hauptmenü](./bilder/wordle_picture.png)
+
+### Spiel
+![Spiel1](./bilder/spiel1.png) ![Spiel2](./bilder/spiel2.png) ![Spiel3](./bilder/spiel3.png) ![Spiel4](./bilder/spiel4.png)
+
+### Historie
+![Spiel4](./bilder/historie.png)

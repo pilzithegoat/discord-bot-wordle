@@ -1,6 +1,7 @@
 import discord
 import asyncio
 import os
+from dotenv import load_dotenv
 from typing import Dict, Any
 from datetime import datetime
 from discord.ui import View, Button, Select, Modal, TextInput
@@ -21,8 +22,15 @@ from models.achievement_system import AchievementSystem
 from models.daily_challenge import DailyChallenge
 from models.wordle_game import WordleGame
 
-MAX_ATTEMPTS = 6
-MAX_HINTS = 3
+# Variables
+load_dotenv()
+MAX_HINTS = int(os.getenv("MAX_HINTS", 0)) # - Used
+MAX_ATTEMPTS = int(os.getenv("MAX_ATTEMPTS", 0))# - Used
+WORDS_FILE = os.getenv("WORDS_FILE")
+DATA_FILE = os.getenv("DATA_FILE")
+CONFIG_FILE = os.getenv("CONFIG_FILE")
+SETTINGS_FILE = os.getenv("SETTINGS_FILE")
+DAILY_FILE = os.getenv("DAILY_FILE")
 
 class WordleCog(commands.Cog):
     def __init__(self, bot):
@@ -521,25 +529,6 @@ class WordleCog(commands.Cog):
     
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @app_commands.command(name="dailylb", description="Daily Challenge Bestenliste")
-    async def daily_leaderboard(self, interaction: discord.Interaction):
-        leaderboard = self.daily_challenge.get_leaderboard()[:10]
-        
-        embed = discord.Embed(
-            title="🏆 Daily Challenge Leaderboard",
-            description=f"Wort des Tages: ||{self.daily_challenge.current_word.upper()}||",
-            color=discord.Color.blurple()
-        )
-        
-        for i, (user_id, data) in enumerate(leaderboard):
-            user = await self.bot.fetch_user(int(user_id))
-            embed.add_field(
-                name=f"{i+1}. {user.display_name}",
-                value=f"Versuche: {data['attempts']} | Zeit: {datetime.fromisoformat(data['timestamp']).strftime('%H:%M:%S')}",
-                inline=False
-            )
-        
-        await interaction.response.send_message(embed=embed)
 
     async def handle_daily(self, interaction: discord.Interaction):
         """Handle Daily Challenge aus dem Menü"""

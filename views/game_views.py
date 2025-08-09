@@ -1,18 +1,21 @@
 import discord
+import os
+from dotenv import load_dotenv
 from discord import ui
 from discord.ui import View, Button, Select, Modal, TextInput, button
 from modals.modals import GuessModal
 from typing import Optional
 from views.daily_views import DailyChallengeView
 
-MAX_HINTS = 3
-WORDS_FILE = "words.txt"
-MAX_ATTEMPTS = 6
-MAX_HINTS = 3
-DATA_FILE = "wordle_data.json"
-CONFIG_FILE = "server_config.json"
-SETTINGS_FILE = "user_settings.json"
-DAILY_FILE = "daily_data.json"
+## Worde Variablen. When use one do a # behind the variable and write # - used
+load_dotenv()
+MAX_HINTS = int(os.getenv("MAX_HINTS", 0))  # - used
+MAX_ATTEMPTS = int(os.getenv("MAX_ATTEMPTS", 0)) # - used
+WORDS_FILE = os.getenv("WORDS_FILE") # - used
+DATA_FILE = os.getenv("DATA_FILE") # - used
+CONFIG_FILE = os.getenv("CONFIG_FILE") # - used
+SETTINGS_FILE = os.getenv("SETTINGS_FILE") # - used
+DAILY_FILE = os.getenv("DAILY_FILE") # - used
 
 class EndGameView(View):
     def __init__(self, cog, user_id: int):
@@ -99,6 +102,9 @@ class MainMenu(View):
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         if interaction.data["custom_id"] == "persistent_new_game":
             await self.cog.start_new_game(interaction)
+            return False
+        elif interaction.data["custom_id"] == "persistent_daily":
+            await self.cog.handle_daily(interaction)
             return False
         return True
 
